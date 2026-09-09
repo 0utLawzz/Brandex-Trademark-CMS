@@ -13,20 +13,15 @@
       --bg-alt: #E8DFC7;
       --bg2: #0C0C0C;
       --panel: #FAF6EE;
-      --border: #0C0C0C;
       --black: #0C0C0C;
       --accent: #C94A00;
       --accent2: #0D9970;
       --accent3: #D4A800;
-      --accent4: #0A6B52;
       --shadow: 5px 5px 0 #0C0C0C;
       --shadow-sm: 3px 3px 0 #0C0C0C;
-      --shadow-lg: 8px 8px 0 #0C0C0C;
       --radius: 6px;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: 'Space Grotesk', Arial, sans-serif;
       background: var(--bg);
@@ -35,8 +30,6 @@
       line-height: 1.5;
       text-transform: uppercase;
     }
-
-    /* NAVBAR */
     .navbar {
       background: var(--bg2);
       height: 62px;
@@ -49,74 +42,45 @@
       z-index: 100;
       border-bottom: 3px solid var(--black);
     }
-
-    .logo-wrap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
+    .logo-wrap { display: flex; align-items: center; gap: 12px; }
     .logo-mark {
-      width: 42px;
-      height: 42px;
+      width: 42px; height: 42px;
       background: #7A1F1F;
       border: 2px solid #C9A227;
       border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
-
     .logo-mark::before {
       content: 'R';
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.4rem;
-      color: #C9A227;
+      font-size: 1.1rem;
       background: #C9A227;
       color: #7A1F1F;
-      width: 26px;
-      height: 26px;
+      width: 26px; height: 26px;
       border-radius: 50%;
       border: 2px solid #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
     }
-
-    .logo-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.1;
-    }
-
+    .logo-text { display: flex; flex-direction: column; line-height: 1.1; }
     .logo-text .main {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       letter-spacing: 1px;
       color: #FAF6EE;
     }
-
     .logo-text .sub {
       font-family: 'DM Mono', monospace;
-      font-size: 0.58rem;
+      font-size: 0.55rem;
       letter-spacing: 1.5px;
       color: #C9A227;
     }
-
     .nav-right {
       font-family: 'DM Mono', monospace;
       font-size: 0.7rem;
       color: #888;
       letter-spacing: 1.5px;
     }
-
-    /* SCREENS */
-    .screen { display: none; }
-    .screen.active { display: block; }
-
-    /* WELCOME */
     #welcome {
       min-height: calc(100vh - 62px);
       display: flex;
@@ -125,10 +89,9 @@
       justify-content: center;
       padding: 36px 16px 50px;
     }
-
     .welcome-stamp {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       letter-spacing: 3px;
       border: 3px solid var(--black);
       background: var(--accent3);
@@ -137,44 +100,40 @@
       border-radius: var(--radius);
       transform: rotate(-5deg);
       box-shadow: var(--shadow-sm);
-      margin-bottom: 22px;
+      margin-bottom: 20px;
       display: inline-block;
     }
-
     .welcome-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.4rem, 7vw, 3.8rem);
+      font-size: clamp(2.3rem, 7vw, 3.6rem);
       letter-spacing: 2px;
       text-align: center;
       line-height: 1.05;
       margin-bottom: 10px;
     }
-
     .welcome-sub {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 500;
       color: #444;
       text-align: center;
       max-width: 520px;
-      margin-bottom: 36px;
+      margin-bottom: 32px;
       letter-spacing: 0.5px;
     }
-
     .menu-buttons {
       display: flex;
       flex-direction: column;
       gap: 14px;
       width: 100%;
-      max-width: 460px;
+      max-width: 520px;
     }
-
     .menu-btn {
       font-family: 'DM Mono', monospace;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 500;
-      letter-spacing: 1.2px;
+      letter-spacing: 1px;
       text-transform: uppercase;
-      padding: 16px 22px;
+      padding: 16px 18px;
       border: 2.5px solid var(--black);
       border-radius: var(--radius);
       background: var(--panel);
@@ -188,334 +147,52 @@
       gap: 14px;
       text-decoration: none;
     }
-
     .menu-btn:hover {
       transform: translate(-3px, -3px);
       box-shadow: 8px 8px 0 #0C0C0C;
     }
-
     .menu-btn:active {
       transform: translate(3px, 3px);
       box-shadow: 0 0 0 #0C0C0C;
     }
-
     .menu-btn.primary {
       background: var(--accent);
       color: #fff;
     }
-
     .btn-num {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.4rem;
-      width: 38px;
-      height: 38px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-size: 1.35rem;
+      width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
       border: 2px solid currentColor;
       border-radius: 4px;
       flex-shrink: 0;
     }
-
-    .btn-label { flex: 1; }
-
-    .btn-tag {
-      font-size: 0.6rem;
-      letter-spacing: 1px;
-      padding: 3px 7px;
+    .btn-content { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .btn-label { font-size: 0.9rem; }
+    .btn-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 2px;
+    }
+    .btn-links span {
+      font-size: 0.58rem;
+      letter-spacing: 0.8px;
+      padding: 2px 6px;
       border: 1.5px solid currentColor;
       border-radius: 3px;
-      opacity: 0.75;
+      opacity: 0.85;
     }
-
-    /* FORM SCREEN */
-    #formScreen {
-      padding: 28px 14px 50px;
-    }
-
-    .form-wrap {
-      max-width: 880px;
-      margin: 0 auto;
-    }
-
-    .form-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 22px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .form-header h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2rem;
-      letter-spacing: 1px;
-    }
-
-    .back-btn {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 10px 16px;
-      background: var(--panel);
-      border: 2.5px solid var(--black);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
-      cursor: pointer;
-      transition: transform 0.12s, box-shadow 0.12s;
-    }
-
-    .back-btn:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 5px 5px 0 #0C0C0C;
-    }
-
-    .back-btn:active {
-      transform: translate(2px, 2px);
-      box-shadow: 0 0 0 #0C0C0C;
-    }
-
-    .card {
-      background: var(--panel);
-      border: 3px solid var(--black);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 24px 20px;
-      margin-bottom: 20px;
-    }
-
-    .section-title {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.78rem;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 16px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid var(--black);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .section-title::before {
-      content: '';
-      width: 10px;
-      height: 10px;
-      background: var(--accent);
-      border: 2px solid var(--black);
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-
-    @media (max-width: 640px) {
-      .grid { grid-template-columns: 1fr; }
-    }
-
-    .full { grid-column: 1 / -1; }
-
-    label {
-      display: block;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      margin-bottom: 5px;
-      color: #333;
-    }
-
-    label .req { color: var(--accent); }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 11px 12px;
-      background: var(--panel);
-      border: 2px solid var(--black);
-      border-radius: 0;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.95rem;
-      color: var(--black);
-      text-transform: uppercase;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-
-    input::placeholder, textarea::placeholder {
-      color: rgba(12,12,12,0.35);
-      text-transform: uppercase;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--accent);
-      border-width: 2.5px;
-      box-shadow: 0 0 0 2px rgba(201,74,0,0.20);
-    }
-
-    select {
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%230C0C0C' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      padding-right: 34px;
-    }
-
-    textarea { resize: vertical; min-height: 70px; }
-
-    .file-area {
-      border: 2.5px dashed var(--black);
-      border-radius: var(--radius);
-      padding: 26px 14px;
-      text-align: center;
-      background: var(--bg-alt);
-      cursor: pointer;
-      transition: background 0.15s, border-color 0.15s;
-    }
-
-    .file-area:hover, .file-area.dragover {
-      background: #E0D6B8;
-      border-color: var(--accent);
-    }
-
-    .file-area p {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.78rem;
-      letter-spacing: 0.5px;
-    }
-
-    .file-area .note {
-      font-size: 0.68rem;
-      margin-top: 6px;
-      opacity: 0.6;
-      letter-spacing: 0;
-      font-family: 'Space Grotesk', sans-serif;
-    }
-
-    .file-area input { display: none; }
-
-    .preview {
-      margin-top: 12px;
-      max-height: 140px;
-      border: 2px solid var(--black);
-      display: none;
-    }
-
-    .btn-row {
-      display: flex;
-      gap: 12px;
-      margin-top: 8px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 13px 22px;
-      border: 2.5px solid var(--black);
-      border-radius: var(--radius);
-      cursor: pointer;
-      box-shadow: var(--shadow);
-      transition: transform 0.12s, box-shadow 0.12s;
-    }
-
-    .btn:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 7px 7px 0 #0C0C0C;
-    }
-
-    .btn:active {
-      transform: translate(3px, 3px);
-      box-shadow: 0 0 0 #0C0C0C;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-      flex: 1;
-    }
-
-    .btn-primary:disabled {
-      background: #ccc;
-      color: #666;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .btn-secondary {
-      background: var(--panel);
-      color: var(--black);
-    }
-
-    #status {
-      margin-top: 18px;
-      padding: 14px 16px;
-      border: 3px solid var(--black);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
-      display: none;
-      font-size: 0.9rem;
-    }
-
-    #status.success { background: #d4f5e9; border-color: var(--accent2); display: block; }
-    #status.error { background: #fde8e4; border-color: var(--accent); display: block; }
-    #status.info { background: #fff8d6; border-color: var(--accent3); display: block; }
-
-    .links {
-      margin-top: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .links a {
-      display: block;
-      padding: 11px 14px;
-      background: var(--panel);
-      border: 2.5px solid var(--black);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
-      color: var(--black);
-      text-decoration: none;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 0.8px;
-      text-align: center;
-      transition: transform 0.12s, box-shadow 0.12s;
-    }
-
-    .links a:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 5px 5px 0 #0C0C0C;
-      background: var(--accent2);
-      color: #fff;
-    }
-
-    .note { font-size: 0.72rem; color: #666; margin-top: 4px; }
-
     footer {
       text-align: center;
-      padding: 20px;
+      padding: 18px;
       font-family: 'DM Mono', monospace;
       font-size: 0.65rem;
       letter-spacing: 1.5px;
       color: #666;
       border-top: 2px solid var(--black);
     }
-
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-in { animation: slideUp 0.3s ease forwards; }
   </style>
 </head>
 <body>
@@ -530,341 +207,87 @@
     <div class="nav-right">CMS</div>
   </nav>
 
-  <!-- WELCOME / MENU -->
-  <div id="welcome" class="screen active">
+  <div id="welcome">
     <div class="welcome-stamp">CMS V1.0</div>
     <h1 class="welcome-title">BRANDEX LAW<br>ASSOCIATES CMS</h1>
-    <p class="welcome-sub">Select a tool below to continue. All data is written in CAPITAL letters.</p>
+    <p class="welcome-sub">Select a tool below. All data is written in CAPITAL letters.</p>
 
     <div class="menu-buttons">
-      <button class="menu-btn primary" onclick="openForm()">
+      <!-- 01 Trademark Application (standalone page) -->
+      <a class="menu-btn primary" href="trademark-application.html">
         <span class="btn-num">01</span>
-        <span class="btn-label">Trademark Application</span>
-        <span class="btn-tag">LIVE</span>
-      </button>
+        <div class="btn-content">
+          <span class="btn-label">Trademark Application</span>
+          <div class="btn-links"><span>LIVE FORM</span></div>
+        </div>
+      </a>
 
+      <!-- 02 Database Record -->
       <a class="menu-btn" href="https://brandexsheet.vercel.app/" target="_blank" rel="noopener">
         <span class="btn-num">02</span>
-        <span class="btn-label">Database Record</span>
-        <span class="btn-tag">OPEN</span>
+        <div class="btn-content">
+          <span class="btn-label">Database Record</span>
+          <div class="btn-links">
+            <span>DEPLOY</span>
+            <span>SHEET</span>
+          </div>
+        </div>
+      </a>
+      <!-- Sheet link as secondary small action -->
+      <a class="menu-btn" href="https://docs.google.com/spreadsheets/d/1yu27k_3Z6cCJmcnQI52z1dIC52Zi9ZxaKlo9wJiNFiQ/edit?gid=229416165#gid=229416165" target="_blank" rel="noopener" style="margin-top:-6px; opacity:0.85; font-size:0.8rem; padding:10px 18px;">
+        <span class="btn-num" style="width:28px;height:28px;font-size:1rem;">↳</span>
+        <div class="btn-content">
+          <span class="btn-label" style="font-size:0.78rem;">Database Sheet (Direct)</span>
+        </div>
       </a>
 
+      <!-- 03 Salary Report -->
       <a class="menu-btn" href="https://salary-report-generator.vercel.app/" target="_blank" rel="noopener">
         <span class="btn-num">03</span>
-        <span class="btn-label">Salary Report</span>
-        <span class="btn-tag">OPEN</span>
+        <div class="btn-content">
+          <span class="btn-label">Salary Report</span>
+          <div class="btn-links">
+            <span>DEPLOY</span>
+            <span>SHEET</span>
+          </div>
+        </div>
+      </a>
+      <a class="menu-btn" href="https://docs.google.com/spreadsheets/d/1sc8G95EXoc6ZxC73A8qwAP068O_Z6A19YvTkgpC84SI/edit?gid=1569630085#gid=1569630085" target="_blank" rel="noopener" style="margin-top:-6px; opacity:0.85; font-size:0.8rem; padding:10px 18px;">
+        <span class="btn-num" style="width:28px;height:28px;font-size:1rem;">↳</span>
+        <div class="btn-content">
+          <span class="btn-label" style="font-size:0.78rem;">Salary Sheet (Direct)</span>
+        </div>
       </a>
 
+      <!-- 04 Consultant Ledger -->
       <a class="menu-btn" href="https://docs.google.com/spreadsheets/d/1tZqytFeYCnFCxVqJWTIUqJC8qwpop_J6IkuNwbr9nfw/edit?gid=236529280#gid=236529280" target="_blank" rel="noopener">
         <span class="btn-num">04</span>
-        <span class="btn-label">Consultant Ledger</span>
-        <span class="btn-tag">SHEET</span>
+        <div class="btn-content">
+          <span class="btn-label">Consultant Ledger</span>
+          <div class="btn-links"><span>SHEET</span></div>
+        </div>
       </a>
 
+      <!-- 05 Personal Ledger -->
       <a class="menu-btn" href="https://docs.google.com/spreadsheets/d/1jsoevY_0tSrayxPNTZjRU5LBB9LKTFHa2hrDG57sc0k/edit?gid=1788212026#gid=1788212026" target="_blank" rel="noopener">
         <span class="btn-num">05</span>
-        <span class="btn-label">Personal Ledger</span>
-        <span class="btn-tag">SHEET</span>
+        <div class="btn-content">
+          <span class="btn-label">Personal Ledger</span>
+          <div class="btn-links"><span>SHEET</span></div>
+        </div>
       </a>
 
+      <!-- 06 Document Enhancer -->
       <a class="menu-btn" href="https://0utlawzz.github.io/Document-Enhancer/" target="_blank" rel="noopener">
         <span class="btn-num">06</span>
-        <span class="btn-label">Document Enhancer</span>
-        <span class="btn-tag">OPEN</span>
+        <div class="btn-content">
+          <span class="btn-label">Document Enhancer</span>
+          <div class="btn-links"><span>DEPLOY</span></div>
+        </div>
       </a>
     </div>
   </div>
 
-  <!-- FORM SCREEN -->
-  <div id="formScreen" class="screen">
-    <div class="form-wrap">
-      <div class="form-header">
-        <h1>Trademark Application</h1>
-        <button class="back-btn" onclick="goHome()">← Back to Menu</button>
-      </div>
-
-      <form id="tmForm">
-        <div class="card">
-          <div class="section-title">Basic Information</div>
-          <div class="grid">
-            <div>
-              <label>Folder / Client Name <span class="req">*</span></label>
-              <input type="text" id="folder" required placeholder="E.G. ABC COMPANY" />
-            </div>
-            <div>
-              <label>TM / Application Number</label>
-              <input type="text" id="tm" placeholder="OPTIONAL" />
-            </div>
-            <div>
-              <label>Class <span class="req">*</span></label>
-              <input type="text" id="classNo" required placeholder="E.G. 25 OR 35" />
-            </div>
-            <div>
-              <label>Class Description</label>
-              <input type="text" id="classDesc" placeholder="E.G. CLOTHING, FOOTWEAR" />
-            </div>
-            <div class="full">
-              <label>Application Type <span class="req">*</span></label>
-              <select id="appType" required>
-                <option value="">-- SELECT --</option>
-                <option value="SOLE PROPRIETOR">SOLE PROPRIETOR</option>
-                <option value="PARTNERS">PARTNERS</option>
-                <option value="A PAKISTANI COMPANY">A PAKISTANI COMPANY</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="section-title">Applicant Details</div>
-          <div class="grid">
-            <div class="full">
-              <label>Applicant Name <span class="req">*</span></label>
-              <input type="text" id="appName" required />
-            </div>
-            <div>
-              <label>S/O or D/O</label>
-              <input type="text" id="appSo" />
-            </div>
-            <div>
-              <label>CNIC</label>
-              <input type="text" id="appCnic" placeholder="XXXXX-XXXXXXX-X" />
-            </div>
-            <div>
-              <label>Issue Date</label>
-              <input type="text" id="issueDate" placeholder="E.G. 01-JAN-2024" />
-            </div>
-            <div>
-              <label>Expiry Date</label>
-              <input type="text" id="expiryDate" placeholder="E.G. 01-JAN-2034" />
-            </div>
-            <div class="full">
-              <label>Trade Name / Business</label>
-              <input type="text" id="appTrade" />
-            </div>
-            <div class="full">
-              <label>Applicant Address</label>
-              <textarea id="appAdd" rows="2"></textarea>
-            </div>
-            <div>
-              <label>Year</label>
-              <select id="year">
-                <option value="">-- SELECT --</option>
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-                <option value="2024">2024</option>
-                <option value="2025">2025</option>
-                <option value="2026" selected>2026</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="section-title">Consultant / Agent</div>
-          <div class="grid">
-            <div>
-              <label>Consultant Name</label>
-              <input type="text" id="conName" />
-            </div>
-            <div>
-              <label>Consultant Address</label>
-              <input type="text" id="conAdd" />
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="section-title">Trademark Image (Optional)</div>
-          <div class="file-area" id="dropZone">
-            <p>Click or Drag & Drop Image Here</p>
-            <p class="note">PNG, JPG, JPEG • Max Recommended 2MB</p>
-            <input type="file" id="imageFile" accept="image/*" />
-            <img id="preview" class="preview" alt="Preview" />
-          </div>
-          <div style="margin-top:12px;">
-            <label>Fallback Text (If No Image)</label>
-            <input type="text" id="noImg" value="[NO IMAGE PROVIDED]" />
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="section-title">Backend Configuration</div>
-          <div>
-            <label>Apps Script Web App URL <span class="req">*</span></label>
-            <input type="url" id="webAppUrl" required placeholder="HTTPS://SCRIPT.GOOGLE.COM/MACROS/S/XXXX/EXEC" style="text-transform:none;" />
-            <p class="note">Paste the Web App deployment URL from your Google Apps Script project.</p>
-          </div>
-        </div>
-
-        <div class="btn-row">
-          <button type="submit" class="btn btn-primary" id="submitBtn">Generate Documents</button>
-          <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
-        </div>
-      </form>
-
-      <div id="status"></div>
-    </div>
-  </div>
-
-  <footer>Brandex Law Associates · Trademark Application Processor · CMS</footer>
-
-  <script>
-    function openForm() {
-      document.getElementById('welcome').classList.remove('active');
-      document.getElementById('formScreen').classList.add('active');
-      document.getElementById('formScreen').classList.add('animate-in');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function goHome() {
-      document.getElementById('formScreen').classList.remove('active');
-      document.getElementById('welcome').classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('imageFile');
-    const preview = document.getElementById('preview');
-    const statusEl = document.getElementById('status');
-    const submitBtn = document.getElementById('submitBtn');
-
-    dropZone.addEventListener('click', () => fileInput.click());
-    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('dragover');
-      if (e.dataTransfer.files.length) {
-        fileInput.files = e.dataTransfer.files;
-        showPreview(e.dataTransfer.files[0]);
-      }
-    });
-    fileInput.addEventListener('change', () => {
-      if (fileInput.files[0]) showPreview(fileInput.files[0]);
-    });
-
-    function showPreview(file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        preview.src = e.target.result;
-        preview.style.display = 'block';
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function showStatus(msg, type, links = null) {
-      statusEl.className = type;
-      let html = msg;
-      if (links) {
-        html += `<div class="links">
-          ${links.folderUrl ? `<a href="${links.folderUrl}" target="_blank">Open Drive Folder</a>` : ''}
-          ${links.tm1Url ? `<a href="${links.tm1Url}" target="_blank">Open TM-1 Document</a>` : ''}
-          ${links.tm48Url ? `<a href="${links.tm48Url}" target="_blank">Open TM-48 Document</a>` : ''}
-        </div>`;
-      }
-      statusEl.innerHTML = html;
-      statusEl.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function resetForm() {
-      document.getElementById('tmForm').reset();
-      preview.style.display = 'none';
-      statusEl.style.display = 'none';
-      document.getElementById('noImg').value = '[NO IMAGE PROVIDED]';
-      document.getElementById('year').value = '2026';
-    }
-
-    // Force UPPERCASE on all text inputs (except URL)
-    document.querySelectorAll('input[type="text"], textarea').forEach(el => {
-      if (el.id === 'webAppUrl') return;
-      el.addEventListener('input', () => {
-        const start = el.selectionStart;
-        const end = el.selectionEnd;
-        el.value = el.value.toUpperCase();
-        el.setSelectionRange(start, end);
-      });
-    });
-
-    document.getElementById('tmForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const webAppUrl = document.getElementById('webAppUrl').value.trim();
-      if (!webAppUrl) {
-        showStatus('Please enter the Apps Script Web App URL.', 'error');
-        return;
-      }
-
-      submitBtn.disabled = true;
-      showStatus('Processing... Please wait (this may take 15-40 seconds).', 'info');
-
-      // Always send CAPITAL values
-      const payload = {
-        action: 'generateFromForm',
-        folder: document.getElementById('folder').value.trim().toUpperCase(),
-        tm: document.getElementById('tm').value.trim().toUpperCase(),
-        classNo: document.getElementById('classNo').value.trim().toUpperCase(),
-        classDesc: document.getElementById('classDesc').value.trim().toUpperCase(),
-        appType: document.getElementById('appType').value.toUpperCase(),
-        appName: document.getElementById('appName').value.trim().toUpperCase(),
-        appSo: document.getElementById('appSo').value.trim().toUpperCase(),
-        appCnic: document.getElementById('appCnic').value.trim().toUpperCase(),
-        issueDate: document.getElementById('issueDate').value.trim().toUpperCase(),
-        expiryDate: document.getElementById('expiryDate').value.trim().toUpperCase(),
-        appTrade: document.getElementById('appTrade').value.trim().toUpperCase(),
-        appAdd: document.getElementById('appAdd').value.trim().toUpperCase(),
-        year: document.getElementById('year').value,
-        conName: document.getElementById('conName').value.trim().toUpperCase(),
-        conAdd: document.getElementById('conAdd').value.trim().toUpperCase(),
-        noImg: (document.getElementById('noImg').value.trim() || '[NO IMAGE PROVIDED]').toUpperCase()
-      };
-
-      const file = fileInput.files[0];
-      if (file) {
-        const base64 = await new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(file);
-        });
-        payload.imageBase64 = base64;
-        payload.imageName = file.name;
-        payload.imageMime = file.type;
-      }
-
-      try {
-        const res = await fetch(webAppUrl, {
-          method: 'POST',
-          body: JSON.stringify(payload),
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-        });
-
-        const text = await res.text();
-        let data;
-        try {
-          data = JSON.parse(text);
-        } catch {
-          throw new Error('Invalid response from server: ' + text.substring(0, 200));
-        }
-
-        if (data.ok) {
-          showStatus(
-            `✅ Success! Documents generated.<br>Serial: <strong>${data.serialNo || 'N/A'}</strong><br>Row saved in Sheet1.`,
-            'success',
-            {
-              folderUrl: data.folderUrl,
-              tm1Url: data.tm1Url,
-              tm48Url: data.tm48Url
-            }
-          );
-        } else {
-          showStatus('❌ Error: ' + (data.error || 'Unknown error'), 'error');
-        }
-      } catch (err) {
-        showStatus('❌ Request failed: ' + err.message, 'error');
-      } finally {
-        submitBtn.disabled = false;
-      }
-    });
-  </script>
+  <footer>Brandex Law Associates · CMS</footer>
 </body>
 </html>
