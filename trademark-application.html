@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-neobrutalism">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trademark Application — Brandex CMS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F0E8D0;
+      --bg-alt: #E8DFC7;
+      --bg2: #0C0C0C;
+      --panel: #FAF6EE;
+      --black: #0C0C0C;
+      --accent: #C94A00;
+      --accent2: #0D9970;
+      --accent3: #D4A800;
+      --shadow: 5px 5px 0 #0C0C0C;
+      --shadow-sm: 3px 3px 0 #0C0C0C;
+      --radius: 6px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--black);
+      min-height: 100vh;
+      line-height: 1.5;
+      text-transform: uppercase;
+    }
+    .navbar {
+      background: var(--bg2);
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 3px solid var(--black);
+    }
+    .logo-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.15rem;
+      letter-spacing: 1px;
+      color: #FAF6EE;
+    }
+    .logo-text span { color: #C9A227; }
+    .nav-right {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: #888;
+      letter-spacing: 1px;
+    }
+    .page {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 28px 14px 50px;
+    }
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .page-header h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.9rem;
+      letter-spacing: 1px;
+    }
+    .back-btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 1px;
+      padding: 9px 14px;
+      background: var(--panel);
+      border: 2.5px solid var(--black);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--black);
+      transition: transform 0.12s, box-shadow 0.12s;
+    }
+    .back-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 #0C0C0C;
+    }
+    .card {
+      background: var(--panel);
+      border: 3px solid var(--black);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px 18px;
+      margin-bottom: 18px;
+    }
+    .section-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      margin-bottom: 14px;
+      padding-bottom: 7px;
+      border-bottom: 2px solid var(--black);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title::before {
+      content: '';
+      width: 9px; height: 9px;
+      background: var(--accent);
+      border: 2px solid var(--black);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 13px;
+    }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+    .full { grid-column: 1 / -1; }
+    label {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.7px;
+      margin-bottom: 4px;
+      color: #333;
+    }
+    label .req { color: var(--accent); }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 11px;
+      background: var(--panel);
+      border: 2px solid var(--black);
+      border-radius: 0;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.92rem;
+      color: var(--black);
+      text-transform: uppercase;
+    }
+    input::placeholder, textarea::placeholder {
+      color: rgba(12,12,12,0.35);
+      text-transform: uppercase;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      border-width: 2.5px;
+      box-shadow: 0 0 0 2px rgba(201,74,0,0.2);
+    }
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%230C0C0C' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 11px center;
+      padding-right: 32px;
+    }
+    textarea { resize: vertical; min-height: 68px; }
+    .file-area {
+      border: 2.5px dashed var(--black);
+      border-radius: var(--radius);
+      padding: 24px 12px;
+      text-align: center;
+      background: var(--bg-alt);
+      cursor: pointer;
+    }
+    .file-area:hover, .file-area.dragover {
+      background: #E0D6B8;
+      border-color: var(--accent);
+    }
+    .file-area p {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+    .file-area .note {
+      font-size: 0.65rem;
+      margin-top: 5px;
+      opacity: 0.6;
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: 0;
+    }
+    .file-area input { display: none; }
+    .preview {
+      margin-top: 12px;
+      max-height: 130px;
+      border: 2px solid var(--black);
+      display: none;
+    }
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+      letter-spacing: 1px;
+      padding: 12px 20px;
+      border: 2.5px solid var(--black);
+      border-radius: var(--radius);
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: transform 0.12s, box-shadow 0.12s;
+    }
+    .btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0 #0C0C0C;
+    }
+    .btn:active {
+      transform: translate(3px, 3px);
+      box-shadow: 0 0 0 #0C0C0C;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      flex: 1;
+    }
+    .btn-primary:disabled {
+      background: #ccc;
+      color: #666;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-secondary {
+      background: var(--panel);
+      color: var(--black);
+    }
+    #status {
+      margin-top: 16px;
+      padding: 13px 15px;
+      border: 3px solid var(--black);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      display: none;
+      font-size: 0.88rem;
+    }
+    #status.success { background: #d4f5e9; border-color: var(--accent2); display: block; }
+    #status.error { background: #fde8e4; border-color: var(--accent); display: block; }
+    #status.info { background: #fff8d6; border-color: var(--accent3); display: block; }
+    .links {
+      margin-top: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .links a {
+      display: block;
+      padding: 10px 13px;
+      background: var(--panel);
+      border: 2.5px solid var(--black);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      color: var(--black);
+      text-decoration: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.7px;
+      text-align: center;
+    }
+    .links a:hover {
+      background: var(--accent2);
+      color: #fff;
+    }
+    .note { font-size: 0.7rem; color: #666; margin-top: 4px; }
+    footer {
+      text-align: center;
+      padding: 16px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 1.2px;
+      color: #666;
+      border-top: 2px solid var(--black);
+    }
+    .settings-note {
+      font-size: 0.68rem;
+      color: #555;
+      margin-top: 6px;
+      letter-spacing: 0.3px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo-text">BRANDEX <span>LAW</span> ASSOCIATES</div>
+    <div class="nav-right">TRADEMARK APPLICATION</div>
+  </nav>
+
+  <div class="page">
+    <div class="page-header">
+      <h1>Trademark Application</h1>
+      <a class="back-btn" href="index.html">← Back to CMS</a>
+    </div>
+
+    <form id="tmForm">
+      <div class="card">
+        <div class="section-title">Basic Information</div>
+        <div class="grid">
+          <div>
+            <label>Folder / Client Name <span class="req">*</span></label>
+            <input type="text" id="folder" required placeholder="E.G. ABC COMPANY" />
+          </div>
+          <div>
+            <label>TM / Application Number</label>
+            <input type="text" id="tm" placeholder="OPTIONAL" />
+          </div>
+          <div>
+            <label>Class <span class="req">*</span></label>
+            <input type="text" id="classNo" required placeholder="E.G. 25 OR 35" />
+          </div>
+          <div>
+            <label>Class Description</label>
+            <input type="text" id="classDesc" placeholder="E.G. CLOTHING, FOOTWEAR" />
+          </div>
+          <div class="full">
+            <label>Application Type <span class="req">*</span></label>
+            <select id="appType" required>
+              <option value="">-- SELECT --</option>
+              <option value="SOLE PROPRIETOR">SOLE PROPRIETOR</option>
+              <option value="PARTNERS">PARTNERS</option>
+              <option value="A PAKISTANI COMPANY">A PAKISTANI COMPANY</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Applicant Details</div>
+        <div class="grid">
+          <div class="full">
+            <label>Applicant Name <span class="req">*</span></label>
+            <input type="text" id="appName" required />
+          </div>
+          <div>
+            <label>S/O or D/O</label>
+            <input type="text" id="appSo" />
+          </div>
+          <div>
+            <label>CNIC</label>
+            <input type="text" id="appCnic" placeholder="XXXXX-XXXXXXX-X" />
+          </div>
+          <div>
+            <label>Issue Date</label>
+            <input type="text" id="issueDate" placeholder="E.G. 01-JAN-2024" />
+          </div>
+          <div>
+            <label>Expiry Date</label>
+            <input type="text" id="expiryDate" placeholder="E.G. 01-JAN-2034" />
+          </div>
+          <div class="full">
+            <label>Trade Name / Business</label>
+            <input type="text" id="appTrade" />
+          </div>
+          <div class="full">
+            <label>Applicant Address</label>
+            <textarea id="appAdd" rows="2"></textarea>
+          </div>
+          <div>
+            <label>Year</label>
+            <select id="year">
+              <option value="">-- SELECT --</option>
+              <option value="2022">2022</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+              <option value="2026" selected>2026</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Consultant / Agent</div>
+        <div class="grid">
+          <div>
+            <label>Consultant Name</label>
+            <input type="text" id="conName" />
+          </div>
+          <div>
+            <label>Consultant Address</label>
+            <input type="text" id="conAdd" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Trademark Image (Optional)</div>
+        <div class="file-area" id="dropZone">
+          <p>Click or Drag & Drop Image Here</p>
+          <p class="note">PNG, JPG, JPEG • Max Recommended 2MB</p>
+          <input type="file" id="imageFile" accept="image/*" />
+          <img id="preview" class="preview" alt="Preview" />
+        </div>
+        <div style="margin-top:12px;">
+          <label>Fallback Text (If No Image)</label>
+          <input type="text" id="noImg" value="[NO IMAGE PROVIDED]" />
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button type="submit" class="btn btn-primary" id="submitBtn">Generate Documents</button>
+        <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
+      </div>
+    </form>
+
+    <div id="status"></div>
+  </div>
+
+  <footer>Brandex Law Associates · Trademark Application · CMS</footer>
+
+  <script>
+    // ============================================================
+    //  SETTINGS — Apps Script Web App URL (edit only here)
+    // ============================================================
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec";
+    // ============================================================
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('imageFile');
+    const preview = document.getElementById('preview');
+    const statusEl = document.getElementById('status');
+    const submitBtn = document.getElementById('submitBtn');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      if (e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        showPreview(e.dataTransfer.files[0]);
+      }
+    });
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files[0]) showPreview(fileInput.files[0]);
+    });
+
+    function showPreview(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function showStatus(msg, type, links = null) {
+      statusEl.className = type;
+      let html = msg;
+      if (links) {
+        html += `<div class="links">
+          ${links.folderUrl ? `<a href="${links.folderUrl}" target="_blank">Open Drive Folder</a>` : ''}
+          ${links.tm1Url ? `<a href="${links.tm1Url}" target="_blank">Open TM-1 Document</a>` : ''}
+          ${links.tm48Url ? `<a href="${links.tm48Url}" target="_blank">Open TM-48 Document</a>` : ''}
+        </div>`;
+      }
+      statusEl.innerHTML = html;
+      statusEl.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetForm() {
+      document.getElementById('tmForm').reset();
+      preview.style.display = 'none';
+      statusEl.style.display = 'none';
+      document.getElementById('noImg').value = '[NO IMAGE PROVIDED]';
+      document.getElementById('year').value = '2026';
+    }
+
+    // Force UPPERCASE while typing
+    document.querySelectorAll('input[type="text"], textarea').forEach(el => {
+      el.addEventListener('input', () => {
+        const start = el.selectionStart;
+        const end = el.selectionEnd;
+        el.value = el.value.toUpperCase();
+        el.setSelectionRange(start, end);
+      });
+    });
+
+    document.getElementById('tmForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('YOUR_DEPLOYMENT_ID')) {
+        showStatus('Apps Script URL is not set. Open trademark-application.html and put your Web App URL in the APPS_SCRIPT_URL constant at the top of the script.', 'error');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      showStatus('Processing... Please wait (this may take 15-40 seconds).', 'info');
+
+      const payload = {
+        action: 'generateFromForm',
+        folder: document.getElementById('folder').value.trim().toUpperCase(),
+        tm: document.getElementById('tm').value.trim().toUpperCase(),
+        classNo: document.getElementById('classNo').value.trim().toUpperCase(),
+        classDesc: document.getElementById('classDesc').value.trim().toUpperCase(),
+        appType: document.getElementById('appType').value.toUpperCase(),
+        appName: document.getElementById('appName').value.trim().toUpperCase(),
+        appSo: document.getElementById('appSo').value.trim().toUpperCase(),
+        appCnic: document.getElementById('appCnic').value.trim().toUpperCase(),
+        issueDate: document.getElementById('issueDate').value.trim().toUpperCase(),
+        expiryDate: document.getElementById('expiryDate').value.trim().toUpperCase(),
+        appTrade: document.getElementById('appTrade').value.trim().toUpperCase(),
+        appAdd: document.getElementById('appAdd').value.trim().toUpperCase(),
+        year: document.getElementById('year').value,
+        conName: document.getElementById('conName').value.trim().toUpperCase(),
+        conAdd: document.getElementById('conAdd').value.trim().toUpperCase(),
+        noImg: (document.getElementById('noImg').value.trim() || '[NO IMAGE PROVIDED]').toUpperCase()
+      };
+
+      const file = fileInput.files[0];
+      if (file) {
+        const base64 = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+        payload.imageBase64 = base64;
+        payload.imageName = file.name;
+        payload.imageMime = file.type;
+      }
+
+      try {
+        const res = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload),
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+        });
+
+        const text = await res.text();
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch {
+          throw new Error('Invalid response from server: ' + text.substring(0, 200));
+        }
+
+        if (data.ok) {
+          showStatus(
+            `✅ Success! Documents generated.<br>Serial: <strong>${data.serialNo || 'N/A'}</strong><br>Row saved in Sheet1.`,
+            'success',
+            {
+              folderUrl: data.folderUrl,
+              tm1Url: data.tm1Url,
+              tm48Url: data.tm48Url
+            }
+          );
+        } else {
+          showStatus('❌ Error: ' + (data.error || 'Unknown error'), 'error');
+        }
+      } catch (err) {
+        showStatus('❌ Request failed: ' + err.message, 'error');
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
