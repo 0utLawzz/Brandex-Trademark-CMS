@@ -1,49 +1,22 @@
-# Trademark Application Processor
-
-Web form to generate **TM-1** and **TM-48** documents using your existing Google Apps Script mail-merge backend.
-
-**Live Demo (after enabling GitHub Pages):**  
-`https://0utLawzz.github.io/Trademark-Application-Processor/`
-
----
-
-## Features
-
-- All fields from your original Sheet1 / `getRowData`
-- Optional trademark image upload
-- Generates TM-1 + TM-48 Google Docs
-- Saves a new row in **Sheet1** (STATUS = START 💫, STAGE = STAGE 1)
-- Returns:
-  - Drive Folder link
-  - TM-1 Document link
-  - TM-48 Document link
-
----
-
-## Setup Instructions
-
-### 1. Enable GitHub Pages
-1. Go to repository **Settings → Pages**
-2. Source: **Deploy from a branch**
-3. Branch: `main` / folder: `/ (root)`
-4. Save. Your form will be live at:
-   `https://0utLawzz.github.io/Trademark-Application-Processor/`
-
-### 2. Add Backend Code to Google Apps Script
-
-Open your existing Brandex / mail-merge Apps Script project and **add the following code** at the end (or in a new file).
-
-```javascript
 // ============================================================
 // FORM SUBMISSION HANDLER (for Web Form)
+// Copy this entire file into your existing Apps Script project
 // ============================================================
+
 function doPost(e) {
   try {
     var body = JSON.parse(e.postData.contents || "{}");
 
     if (body.action === "generateFromForm") {
       var result = processFormSubmission(body);
-      return jsonResponse({ ok: true, ...result });
+      return jsonResponse({
+        ok: true,
+        serialNo: result.serialNo,
+        row: result.row,
+        folderUrl: result.folderUrl,
+        tm1Url: result.tm1Url,
+        tm48Url: result.tm48Url
+      });
     }
 
     return jsonResponse({ ok: false, error: "Unknown action" });
@@ -63,7 +36,7 @@ function processFormSubmission(data) {
   var sheet = ss.getSheetByName("Sheet1");
   if (!sheet) throw new Error("Sheet1 not found");
 
-  // Config (same as your existing code)
+  // ==== CONFIGURATION (same IDs you already use) ====
   var MAIN_FOLDER_ID   = "1PI-Znj4HIm6SJ0fNeUeK_p01iUckTg8H";
   var TM1_TEMPLATE_ID  = "1XE42w12VjBMUW7jdvRU-HHdhmFd6yTB7HtL6H27FCnE";
   var TM48_TEMPLATE_ID = "1EDAbs37UZekCrrNn3JKYWZcjMiuBW6bDUsfTg5AVAhc";
@@ -72,49 +45,48 @@ function processFormSubmission(data) {
   var imageId = "";
   if (data.imageBase64) {
     var base64 = data.imageBase64.split(",")[1];
-    var bytes = Utilities.base64Decode(base64);
-    var blob = Utilities.newBlob(bytes, data.imageMime || "image/jpeg", data.imageName || "trademark.jpg");
+    var bytes  = Utilities.base64Decode(base64);
+    var blob   = Utilities.newBlob(bytes, data.imageMime || "image/jpeg", data.imageName || "trademark.jpg");
     var folder = DriveApp.getFolderById(MAIN_FOLDER_ID);
-    var file = folder.createFile(blob);
+    var file   = folder.createFile(blob);
     try {
       file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
     } catch (e) {}
     imageId = file.getId();
   }
 
-  // Append new row to Sheet1
+  // Append new row
   var lastRow = sheet.getLastRow() + 1;
-  var serial = generateUniqueSerial(sheet);
-  var today = Utilities.formatDate(new Date(), "Asia/Karachi", "EEEE, dd MMMM yyyy");
+  var serial  = generateUniqueSerial(sheet);
+  var today   = Utilities.formatDate(new Date(), "Asia/Karachi", "EEEE, dd MMMM yyyy");
 
-  // Columns A-U (21 columns)
   var rowValues = [
-    "START 💫",                    // A STATUS
-    "STAGE 1",                      // B STAGE
-    serial,                         // C SR NO
-    data.tm || "",                   // D TM-NO
-    data.folder || "",               // E NAME / FOLDER
-    today,                          // F DATE
-    data.classNo || "",              // G CLASS
-    data.classDesc || "",            // H CLASS-DESC
-    data.appType || "",              // I APP-TYPE
-    data.appName || "",              // J APP-NAME
-    data.appSo || "",                // K APP-SO
-    data.appCnic || "",              // L APP-CNIC
-    data.issueDate || "",            // M ISSUE-DATE
-    data.expiryDate || "",           // N EXPIRY-DATE
-    data.appTrade || "",             // O APP-TRADE
-    data.appAdd || "",               // P APP-ADD
-    data.year || "",                 // Q YEAR
-    data.conName || "",              // R CON-NAME
-    data.conAdd || "",               // S CON-ADD
-    imageId,                        // T IMG
-    data.noImg || "[NO IMAGE PROVIDED]" // U NO-IMG
+    "START 💫",          // A
+    "STAGE 1",            // B
+    serial,               // C
+    data.tm || "",         // D
+    data.folder || "",     // E
+    today,                // F
+    data.classNo || "",    // G
+    data.classDesc || "",  // H
+    data.appType || "",    // I
+    data.appName || "",    // J
+    data.appSo || "",      // K
+    data.appCnic || "",    // L
+    data.issueDate || "",  // M
+    data.expiryDate || "", // N
+    data.appTrade || "",   // O
+    data.appAdd || "",     // P
+    data.year || "",       // Q
+    data.conName || "",    // R
+    data.conAdd || "",     // S
+    imageId,              // T
+    data.noImg || "[NO IMAGE PROVIDED]" // U
   ];
 
   sheet.getRange(lastRow, 1, 1, 21).setValues([rowValues]);
 
-  // Now process the row (same as your existing processRow)
+  // Process
   sheet.getRange(lastRow, 1).setValue("ON IT 👉");
   SpreadsheetApp.flush();
 
@@ -131,9 +103,6 @@ function processFormSubmission(data) {
   };
 }
 
-/**
- * Modified version of processRow that also returns the generated links
- */
 function processRowAndReturnLinks(sheet, row, mainFolderId, tm1TemplateId, tm48TemplateId) {
   var rowData = getRowData(sheet, row);
   validateRequiredData(rowData, row);
@@ -161,10 +130,6 @@ function processRowAndReturnLinks(sheet, row, mainFolderId, tm1TemplateId, tm48T
 
   var tmImageBlob = getImageFromDriveId(rowData.img);
 
-  // Generate documents and capture their IDs
-  var tm1Doc = null;
-  var tm48Doc = null;
-
   var mergeData = {
     "{{SERIAL}}":        rowData.serialNo    || "",
     "{{TM}}":            rowData.tm          || "",
@@ -185,6 +150,9 @@ function processRowAndReturnLinks(sheet, row, mainFolderId, tm1TemplateId, tm48T
     "{{DATE}}":          rowData.date        || "",
     "{{FOLDER}}":        rowData.folder      || ""
   };
+
+  var tm1Doc = null;
+  var tm48Doc = null;
 
   if (tm1TemplateId) {
     tm1Doc = generateWordDocReturn(tm1TemplateId, newFolder, rowData.folder + " - TM-1",
@@ -213,8 +181,8 @@ function generateWordDocReturn(templateId, folder, docName, mergeData, imageBlob
   }
 
   if (imageBlob) {
-    var imageInserted = replaceTextWithImage(body, imagePlaceholder, imageBlob);
-    if (!imageInserted) {
+    var inserted = replaceTextWithImage(body, imagePlaceholder, imageBlob);
+    if (!inserted) {
       body.replaceText(escapeRegex(imagePlaceholder), fallbackText || "[IMAGE FAILED]");
     }
   } else {
@@ -222,30 +190,5 @@ function generateWordDocReturn(templateId, folder, docName, mergeData, imageBlob
   }
 
   document.saveAndClose();
-  return doc; // return the File object so we can get URL
+  return doc;
 }
-```
-
-> **Important:** Make sure these functions already exist in your project:
-> `generateUniqueSerial`, `getRowData`, `validateRequiredData`, `getImageFromDriveId`, `replaceTextWithImage`, `escapeRegex`
-
-### 3. Deploy as Web App
-1. In Apps Script → **Deploy → New deployment**
-2. Type: **Web app**
-3. Execute as: **Me**
-4. Who has access: **Anyone**
-5. Deploy → Copy the Web App URL
-6. Paste that URL into the form field "Apps Script Web App URL"
-
----
-
-## Notes
-
-- Image is **optional**.
-- Required fields: Folder/Client Name, Class, Application Type, Applicant Name.
-- After successful generation a new row is added to **Sheet1** and marked DONE ✅.
-- The form works from any browser (desktop/mobile).
-
----
-
-Made for Brandex Law Associates

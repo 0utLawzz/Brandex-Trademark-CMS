@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trademark Application Processor</title>
+  <style>
+    :root {
+      --primary: #e94560;
+      --dark: #1a1a2e;
+      --bg: #f4f6f8;
+      --card: #ffffff;
+      --border: #e0e0e0;
+      --success: #28a745;
+      --error: #dc3545;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: #333;
+      line-height: 1.5;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    header {
+      background: var(--dark);
+      color: white;
+      padding: 24px 30px;
+      border-radius: 12px 12px 0 0;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 1.6rem;
+      margin-bottom: 6px;
+    }
+    header p {
+      opacity: 0.85;
+      font-size: 0.95rem;
+    }
+    .form-card {
+      background: var(--card);
+      padding: 30px;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    .section {
+      margin-bottom: 28px;
+    }
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 650px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+    .full { grid-column: 1 / -1; }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #444;
+    }
+    label .req { color: var(--primary); }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(233,69,96,0.15);
+    }
+    textarea { resize: vertical; min-height: 70px; }
+    .file-area {
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      background: #fafafa;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .file-area:hover, .file-area.dragover {
+      border-color: var(--primary);
+      background: #fff5f7;
+    }
+    .file-area input { display: none; }
+    .preview {
+      margin-top: 12px;
+      max-height: 160px;
+      border-radius: 6px;
+      display: none;
+    }
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 12px 28px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      flex: 1;
+    }
+    .btn-primary:hover { background: #c73a52; }
+    .btn-primary:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+    .btn-secondary {
+      background: #eee;
+      color: #333;
+    }
+    .btn-secondary:hover { background: #ddd; }
+    #status {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 8px;
+      display: none;
+      font-size: 0.95rem;
+    }
+    #status.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      display: block;
+    }
+    #status.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      display: block;
+    }
+    #status.info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+      display: block;
+    }
+    .links {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .links a {
+      display: inline-block;
+      padding: 8px 14px;
+      background: var(--dark);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    .links a:hover { opacity: 0.9; }
+    .note {
+      font-size: 0.8rem;
+      color: #777;
+      margin-top: 4px;
+    }
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #888;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Trademark Application Processor</h1>
+      <p>Generate TM-1 &amp; TM-48 documents • Brandex Law Associates</p>
+    </header>
+
+    <div class="form-card">
+      <form id="tmForm">
+        <!-- Basic Info -->
+        <div class="section">
+          <div class="section-title">Basic Information</div>
+          <div class="grid">
+            <div>
+              <label>Folder / Client Name <span class="req">*</span></label>
+              <input type="text" id="folder" required placeholder="e.g. ABC Company" />
+            </div>
+            <div>
+              <label>TM / Application Number</label>
+              <input type="text" id="tm" placeholder="Optional" />
+            </div>
+            <div>
+              <label>Class <span class="req">*</span></label>
+              <input type="text" id="classNo" required placeholder="e.g. 25 or 35" />
+            </div>
+            <div>
+              <label>Class Description</label>
+              <input type="text" id="classDesc" placeholder="e.g. Clothing, Footwear" />
+            </div>
+            <div class="full">
+              <label>Application Type <span class="req">*</span></label>
+              <select id="appType" required>
+                <option value="">-- Select --</option>
+                <option value="SOLE PROPRIETOR">SOLE PROPRIETOR</option>
+                <option value="PARTNERS">PARTNERS</option>
+                <option value="A PAKISTANI COMPANY">A PAKISTANI COMPANY</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Applicant Details -->
+        <div class="section">
+          <div class="section-title">Applicant Details</div>
+          <div class="grid">
+            <div class="full">
+              <label>Applicant Name <span class="req">*</span></label>
+              <input type="text" id="appName" required />
+            </div>
+            <div>
+              <label>S/O or D/O</label>
+              <input type="text" id="appSo" />
+            </div>
+            <div>
+              <label>CNIC</label>
+              <input type="text" id="appCnic" placeholder="XXXXX-XXXXXXX-X" />
+            </div>
+            <div>
+              <label>Issue Date</label>
+              <input type="text" id="issueDate" placeholder="e.g. 01-JAN-2024" />
+            </div>
+            <div>
+              <label>Expiry Date</label>
+              <input type="text" id="expiryDate" placeholder="e.g. 01-JAN-2034" />
+            </div>
+            <div class="full">
+              <label>Trade Name / Business</label>
+              <input type="text" id="appTrade" />
+            </div>
+            <div class="full">
+              <label>Applicant Address</label>
+              <textarea id="appAdd" rows="2"></textarea>
+            </div>
+            <div>
+              <label>Year</label>
+              <select id="year">
+                <option value="">-- Select --</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+                <option value="2026" selected>2026</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Consultant -->
+        <div class="section">
+          <div class="section-title">Consultant / Agent</div>
+          <div class="grid">
+            <div>
+              <label>Consultant Name</label>
+              <input type="text" id="conName" />
+            </div>
+            <div>
+              <label>Consultant Address</label>
+              <input type="text" id="conAdd" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Image -->
+        <div class="section">
+          <div class="section-title">Trademark Image (Optional)</div>
+          <div class="file-area" id="dropZone">
+            <p>Click or drag & drop image here</p>
+            <p class="note">PNG, JPG, JPEG • Max recommended 2MB</p>
+            <input type="file" id="imageFile" accept="image/*" />
+            <img id="preview" class="preview" alt="Preview" />
+          </div>
+          <div style="margin-top:10px;">
+            <label>Fallback text (if no image)</label>
+            <input type="text" id="noImg" value="[NO IMAGE PROVIDED]" />
+          </div>
+        </div>
+
+        <!-- Config -->
+        <div class="section">
+          <div class="section-title">Backend Configuration</div>
+          <div>
+            <label>Apps Script Web App URL <span class="req">*</span></label>
+            <input type="url" id="webAppUrl" required placeholder="https://script.google.com/macros/s/XXXX/exec" />
+            <p class="note">Paste the Web App deployment URL from your Google Apps Script project.</p>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button type="submit" class="btn-primary" id="submitBtn">Generate Documents</button>
+          <button type="button" class="btn-secondary" onclick="resetForm()">Reset</button>
+        </div>
+      </form>
+
+      <div id="status"></div>
+    </div>
+
+    <footer>
+      Brandex Law Associates • Trademark Application Processor
+    </footer>
+  </div>
+
+  <script>
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('imageFile');
+    const preview = document.getElementById('preview');
+    const statusEl = document.getElementById('status');
+    const submitBtn = document.getElementById('submitBtn');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      if (e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        showPreview(e.dataTransfer.files[0]);
+      }
+    });
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files[0]) showPreview(fileInput.files[0]);
+    });
+
+    function showPreview(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function showStatus(msg, type, links = null) {
+      statusEl.className = type;
+      let html = msg;
+      if (links) {
+        html += `<div class="links">
+          ${links.folderUrl ? `<a href="${links.folderUrl}" target="_blank">Open Drive Folder</a>` : ''}
+          ${links.tm1Url ? `<a href="${links.tm1Url}" target="_blank">Open TM-1 Document</a>` : ''}
+          ${links.tm48Url ? `<a href="${links.tm48Url}" target="_blank">Open TM-48 Document</a>` : ''}
+        </div>`;
+      }
+      statusEl.innerHTML = html;
+      statusEl.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetForm() {
+      document.getElementById('tmForm').reset();
+      preview.style.display = 'none';
+      statusEl.style.display = 'none';
+      document.getElementById('noImg').value = '[NO IMAGE PROVIDED]';
+      document.getElementById('year').value = '2026';
+    }
+
+    document.getElementById('tmForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const webAppUrl = document.getElementById('webAppUrl').value.trim();
+      if (!webAppUrl) {
+        showStatus('Please enter the Apps Script Web App URL.', 'error');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      showStatus('Processing... Please wait (this may take 15-40 seconds).', 'info');
+
+      const payload = {
+        action: 'generateFromForm',
+        folder: document.getElementById('folder').value.trim(),
+        tm: document.getElementById('tm').value.trim(),
+        classNo: document.getElementById('classNo').value.trim(),
+        classDesc: document.getElementById('classDesc').value.trim(),
+        appType: document.getElementById('appType').value,
+        appName: document.getElementById('appName').value.trim(),
+        appSo: document.getElementById('appSo').value.trim(),
+        appCnic: document.getElementById('appCnic').value.trim(),
+        issueDate: document.getElementById('issueDate').value.trim(),
+        expiryDate: document.getElementById('expiryDate').value.trim(),
+        appTrade: document.getElementById('appTrade').value.trim(),
+        appAdd: document.getElementById('appAdd').value.trim(),
+        year: document.getElementById('year').value,
+        conName: document.getElementById('conName').value.trim(),
+        conAdd: document.getElementById('conAdd').value.trim(),
+        noImg: document.getElementById('noImg').value.trim() || '[NO IMAGE PROVIDED]'
+      };
+
+      // Handle image if present
+      const file = fileInput.files[0];
+      if (file) {
+        const base64 = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+        payload.imageBase64 = base64;
+        payload.imageName = file.name;
+        payload.imageMime = file.type;
+      }
+
+      try {
+        const res = await fetch(webAppUrl, {
+          method: 'POST',
+          body: JSON.stringify(payload),
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' } // GAS prefers text/plain for CORS
+        });
+
+        const text = await res.text();
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch {
+          throw new Error('Invalid response from server: ' + text.substring(0, 200));
+        }
+
+        if (data.ok) {
+          showStatus(
+            `✅ Success! Documents generated.<br>Serial: <strong>${data.serialNo || 'N/A'}</strong><br>Row saved in Sheet1.`,
+            'success',
+            {
+              folderUrl: data.folderUrl,
+              tm1Url: data.tm1Url,
+              tm48Url: data.tm48Url
+            }
+          );
+        } else {
+          showStatus('❌ Error: ' + (data.error || 'Unknown error'), 'error');
+        }
+      } catch (err) {
+        showStatus('❌ Request failed: ' + err.message, 'error');
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
