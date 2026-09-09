@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BrandEx — Trademark Processor</title>
+  <title>Brandex Law Associates CMS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
@@ -22,9 +22,6 @@
       --shadow: 5px 5px 0 #0C0C0C;
       --shadow-sm: 3px 3px 0 #0C0C0C;
       --shadow-lg: 8px 8px 0 #0C0C0C;
-      --shadow-accent: 5px 5px 0 #C94A00;
-      --border-thin: 2px solid #0C0C0C;
-      --border-thick: 3px solid #0C0C0C;
       --radius: 6px;
     }
 
@@ -36,102 +33,148 @@
       color: var(--black);
       min-height: 100vh;
       line-height: 1.5;
+      text-transform: uppercase;
     }
 
-    /* ========== NAVBAR ========== */
+    /* NAVBAR */
     .navbar {
       background: var(--bg2);
-      height: 58px;
+      height: 62px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 24px;
+      padding: 0 20px;
       position: sticky;
       top: 0;
       z-index: 100;
       border-bottom: 3px solid var(--black);
     }
 
-    .logo {
-      font-family: 'Bebas Neue', 'Arial Black', sans-serif;
-      font-size: 1.6rem;
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-mark {
+      width: 42px;
+      height: 42px;
+      background: #7A1F1F;
+      border: 2px solid #C9A227;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .logo-mark::before {
+      content: 'R';
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: #C9A227;
+      background: #C9A227;
+      color: #7A1F1F;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .logo-text .main {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.25rem;
       letter-spacing: 1px;
       color: #FAF6EE;
     }
-    .logo span.dot { color: var(--accent); }
-    .logo span.brand { color: var(--accent2); }
+
+    .logo-text .sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 1.5px;
+      color: #C9A227;
+    }
 
     .nav-right {
       font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: #888;
-      letter-spacing: 1px;
-      text-transform: uppercase;
+      letter-spacing: 1.5px;
     }
 
-    /* ========== SCREENS ========== */
+    /* SCREENS */
     .screen { display: none; }
     .screen.active { display: block; }
 
-    /* ========== WELCOME SCREEN ========== */
+    /* WELCOME */
     #welcome {
-      min-height: calc(100vh - 58px);
+      min-height: calc(100vh - 62px);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px 20px;
-      position: relative;
+      padding: 36px 16px 50px;
     }
 
     .welcome-stamp {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.4rem;
+      font-size: 1.25rem;
       letter-spacing: 3px;
       border: 3px solid var(--black);
       background: var(--accent3);
       color: var(--black);
-      padding: 6px 18px;
+      padding: 5px 16px;
       border-radius: var(--radius);
-      transform: rotate(-6deg);
+      transform: rotate(-5deg);
       box-shadow: var(--shadow-sm);
-      margin-bottom: 28px;
+      margin-bottom: 22px;
       display: inline-block;
     }
 
     .welcome-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.8rem, 8vw, 4.5rem);
+      font-size: clamp(2.4rem, 7vw, 3.8rem);
       letter-spacing: 2px;
       text-align: center;
       line-height: 1.05;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .welcome-sub {
-      font-size: 1.05rem;
+      font-size: 0.95rem;
       font-weight: 500;
       color: #444;
       text-align: center;
-      max-width: 480px;
-      margin-bottom: 48px;
+      max-width: 520px;
+      margin-bottom: 36px;
+      letter-spacing: 0.5px;
     }
 
     .menu-buttons {
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 14px;
       width: 100%;
-      max-width: 420px;
+      max-width: 460px;
     }
 
     .menu-btn {
       font-family: 'DM Mono', monospace;
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: 500;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.2px;
       text-transform: uppercase;
-      padding: 20px 28px;
+      padding: 16px 22px;
       border: 2.5px solid var(--black);
       border-radius: var(--radius);
       background: var(--panel);
@@ -142,8 +185,8 @@
       text-align: left;
       display: flex;
       align-items: center;
-      gap: 16px;
-      position: relative;
+      gap: 14px;
+      text-decoration: none;
     }
 
     .menu-btn:hover {
@@ -161,25 +204,11 @@
       color: #fff;
     }
 
-    .menu-btn.primary:hover {
-      box-shadow: 8px 8px 0 #0C0C0C;
-    }
-
-    .menu-btn.dummy {
-      opacity: 0.55;
-      cursor: default;
-    }
-
-    .menu-btn.dummy:hover {
-      transform: none;
-      box-shadow: var(--shadow);
-    }
-
     .btn-num {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.6rem;
-      width: 42px;
-      height: 42px;
+      font-size: 1.4rem;
+      width: 38px;
+      height: 38px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -188,22 +217,20 @@
       flex-shrink: 0;
     }
 
-    .btn-label {
-      flex: 1;
-    }
+    .btn-label { flex: 1; }
 
     .btn-tag {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       letter-spacing: 1px;
-      padding: 3px 8px;
+      padding: 3px 7px;
       border: 1.5px solid currentColor;
       border-radius: 3px;
-      opacity: 0.7;
+      opacity: 0.75;
     }
 
-    /* ========== FORM SCREEN ========== */
+    /* FORM SCREEN */
     #formScreen {
-      padding: 32px 16px 60px;
+      padding: 28px 14px 50px;
     }
 
     .form-wrap {
@@ -215,23 +242,23 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       flex-wrap: wrap;
       gap: 12px;
     }
 
     .form-header h1 {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 2.2rem;
+      font-size: 2rem;
       letter-spacing: 1px;
     }
 
     .back-btn {
       font-family: 'DM Mono', monospace;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       letter-spacing: 1px;
       text-transform: uppercase;
-      padding: 10px 18px;
+      padding: 10px 16px;
       background: var(--panel);
       border: 2.5px solid var(--black);
       border-radius: var(--radius);
@@ -255,17 +282,17 @@
       border: 3px solid var(--black);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 28px 24px;
-      margin-bottom: 24px;
+      padding: 24px 20px;
+      margin-bottom: 20px;
     }
 
     .section-title {
       font-family: 'DM Mono', monospace;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       padding-bottom: 8px;
       border-bottom: 2px solid var(--black);
       display: flex;
@@ -284,7 +311,7 @@
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 14px;
     }
 
     @media (max-width: 640px) {
@@ -296,10 +323,10 @@
     label {
       display: block;
       font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       letter-spacing: 0.8px;
       text-transform: uppercase;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       color: #333;
     }
 
@@ -314,11 +341,13 @@
       font-family: 'Space Grotesk', sans-serif;
       font-size: 0.95rem;
       color: var(--black);
+      text-transform: uppercase;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
 
     input::placeholder, textarea::placeholder {
       color: rgba(12,12,12,0.35);
+      text-transform: uppercase;
     }
 
     input:focus, select:focus, textarea:focus {
@@ -341,7 +370,7 @@
     .file-area {
       border: 2.5px dashed var(--black);
       border-radius: var(--radius);
-      padding: 28px 16px;
+      padding: 26px 14px;
       text-align: center;
       background: var(--bg-alt);
       cursor: pointer;
@@ -355,16 +384,14 @@
 
     .file-area p {
       font-family: 'DM Mono', monospace;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       letter-spacing: 0.5px;
-      text-transform: uppercase;
     }
 
     .file-area .note {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       margin-top: 6px;
       opacity: 0.6;
-      text-transform: none;
       letter-spacing: 0;
       font-family: 'Space Grotesk', sans-serif;
     }
@@ -372,7 +399,7 @@
     .file-area input { display: none; }
 
     .preview {
-      margin-top: 14px;
+      margin-top: 12px;
       max-height: 140px;
       border: 2px solid var(--black);
       display: none;
@@ -380,18 +407,18 @@
 
     .btn-row {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       margin-top: 8px;
       flex-wrap: wrap;
     }
 
     .btn {
       font-family: 'DM Mono', monospace;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 500;
       letter-spacing: 1px;
       text-transform: uppercase;
-      padding: 14px 26px;
+      padding: 13px 22px;
       border: 2.5px solid var(--black);
       border-radius: var(--radius);
       cursor: pointer;
@@ -428,45 +455,30 @@
       color: var(--black);
     }
 
-    /* Status */
     #status {
-      margin-top: 20px;
-      padding: 16px 18px;
+      margin-top: 18px;
+      padding: 14px 16px;
       border: 3px solid var(--black);
       border-radius: var(--radius);
       box-shadow: var(--shadow-sm);
       display: none;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
-    #status.success {
-      background: #d4f5e9;
-      border-color: var(--accent2);
-      display: block;
-    }
-
-    #status.error {
-      background: #fde8e4;
-      border-color: var(--accent);
-      display: block;
-    }
-
-    #status.info {
-      background: #fff8d6;
-      border-color: var(--accent3);
-      display: block;
-    }
+    #status.success { background: #d4f5e9; border-color: var(--accent2); display: block; }
+    #status.error { background: #fde8e4; border-color: var(--accent); display: block; }
+    #status.info { background: #fff8d6; border-color: var(--accent3); display: block; }
 
     .links {
-      margin-top: 14px;
+      margin-top: 12px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .links a {
       display: block;
-      padding: 12px 16px;
+      padding: 11px 14px;
       background: var(--panel);
       border: 2.5px solid var(--black);
       border-radius: var(--radius);
@@ -474,9 +486,8 @@
       color: var(--black);
       text-decoration: none;
       font-family: 'DM Mono', monospace;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       letter-spacing: 0.8px;
-      text-transform: uppercase;
       text-align: center;
       transition: transform 0.12s, box-shadow 0.12s;
     }
@@ -488,65 +499,79 @@
       color: #fff;
     }
 
-    .note {
-      font-size: 0.75rem;
-      color: #666;
-      margin-top: 5px;
-    }
+    .note { font-size: 0.72rem; color: #666; margin-top: 4px; }
 
     footer {
       text-align: center;
-      padding: 24px;
+      padding: 20px;
       font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
+      font-size: 0.65rem;
+      letter-spacing: 1.5px;
       color: #666;
       border-top: 2px solid var(--black);
-      margin-top: 20px;
     }
 
     @keyframes slideUp {
-      from { opacity: 0; transform: translateY(24px); }
+      from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-    .animate-in {
-      animation: slideUp 0.35s ease forwards;
-    }
+    .animate-in { animation: slideUp 0.3s ease forwards; }
   </style>
 </head>
 <body>
-  <!-- NAVBAR -->
   <nav class="navbar">
-    <div class="logo">BRAND<span class="dot">.</span><span class="brand">EX</span></div>
-    <div class="nav-right">TRADEMARK PROCESSOR</div>
+    <div class="logo-wrap">
+      <div class="logo-mark"></div>
+      <div class="logo-text">
+        <span class="main">BRANDEX LAW ASSOCIATES</span>
+        <span class="sub">TRADEMARK & IP REGISTRY</span>
+      </div>
+    </div>
+    <div class="nav-right">CMS</div>
   </nav>
 
-  <!-- WELCOME SCREEN -->
+  <!-- WELCOME / MENU -->
   <div id="welcome" class="screen active">
-    <div class="welcome-stamp">VERSION 1.0</div>
-    <h1 class="welcome-title">TRADEMARK<br>APPLICATION<br>PROCESSOR</h1>
-    <p class="welcome-sub">Generate TM-1 & TM-48 documents in one click. Select a tool below to continue.</p>
+    <div class="welcome-stamp">CMS V1.0</div>
+    <h1 class="welcome-title">BRANDEX LAW<br>ASSOCIATES CMS</h1>
+    <p class="welcome-sub">Select a tool below to continue. All data is written in CAPITAL letters.</p>
 
     <div class="menu-buttons">
       <button class="menu-btn primary" onclick="openForm()">
         <span class="btn-num">01</span>
-        <span class="btn-label">Generate TM Documents</span>
+        <span class="btn-label">Trademark Application</span>
         <span class="btn-tag">LIVE</span>
       </button>
 
-      <button class="menu-btn dummy" disabled>
+      <a class="menu-btn" href="https://brandexsheet.vercel.app/" target="_blank" rel="noopener">
         <span class="btn-num">02</span>
-        <span class="btn-label">Coming Soon</span>
-        <span class="btn-tag">DUMMY</span>
-      </button>
+        <span class="btn-label">Database Record</span>
+        <span class="btn-tag">OPEN</span>
+      </a>
 
-      <button class="menu-btn dummy" disabled>
+      <a class="menu-btn" href="https://salary-report-generator.vercel.app/" target="_blank" rel="noopener">
         <span class="btn-num">03</span>
-        <span class="btn-label">Coming Soon</span>
-        <span class="btn-tag">DUMMY</span>
-      </button>
+        <span class="btn-label">Salary Report</span>
+        <span class="btn-tag">OPEN</span>
+      </a>
+
+      <a class="menu-btn" href="https://docs.google.com/spreadsheets/d/1tZqytFeYCnFCxVqJWTIUqJC8qwpop_J6IkuNwbr9nfw/edit?gid=236529280#gid=236529280" target="_blank" rel="noopener">
+        <span class="btn-num">04</span>
+        <span class="btn-label">Consultant Ledger</span>
+        <span class="btn-tag">SHEET</span>
+      </a>
+
+      <a class="menu-btn" href="https://docs.google.com/spreadsheets/d/1jsoevY_0tSrayxPNTZjRU5LBB9LKTFHa2hrDG57sc0k/edit?gid=1788212026#gid=1788212026" target="_blank" rel="noopener">
+        <span class="btn-num">05</span>
+        <span class="btn-label">Personal Ledger</span>
+        <span class="btn-tag">SHEET</span>
+      </a>
+
+      <a class="menu-btn" href="https://0utlawzz.github.io/Document-Enhancer/" target="_blank" rel="noopener">
+        <span class="btn-num">06</span>
+        <span class="btn-label">Document Enhancer</span>
+        <span class="btn-tag">OPEN</span>
+      </a>
     </div>
   </div>
 
@@ -554,7 +579,7 @@
   <div id="formScreen" class="screen">
     <div class="form-wrap">
       <div class="form-header">
-        <h1>GENERATE DOCUMENTS</h1>
+        <h1>Trademark Application</h1>
         <button class="back-btn" onclick="goHome()">← Back to Menu</button>
       </div>
 
@@ -564,24 +589,24 @@
           <div class="grid">
             <div>
               <label>Folder / Client Name <span class="req">*</span></label>
-              <input type="text" id="folder" required placeholder="e.g. ABC Company" />
+              <input type="text" id="folder" required placeholder="E.G. ABC COMPANY" />
             </div>
             <div>
               <label>TM / Application Number</label>
-              <input type="text" id="tm" placeholder="Optional" />
+              <input type="text" id="tm" placeholder="OPTIONAL" />
             </div>
             <div>
               <label>Class <span class="req">*</span></label>
-              <input type="text" id="classNo" required placeholder="e.g. 25 or 35" />
+              <input type="text" id="classNo" required placeholder="E.G. 25 OR 35" />
             </div>
             <div>
               <label>Class Description</label>
-              <input type="text" id="classDesc" placeholder="e.g. Clothing, Footwear" />
+              <input type="text" id="classDesc" placeholder="E.G. CLOTHING, FOOTWEAR" />
             </div>
             <div class="full">
               <label>Application Type <span class="req">*</span></label>
               <select id="appType" required>
-                <option value="">-- Select --</option>
+                <option value="">-- SELECT --</option>
                 <option value="SOLE PROPRIETOR">SOLE PROPRIETOR</option>
                 <option value="PARTNERS">PARTNERS</option>
                 <option value="A PAKISTANI COMPANY">A PAKISTANI COMPANY</option>
@@ -607,11 +632,11 @@
             </div>
             <div>
               <label>Issue Date</label>
-              <input type="text" id="issueDate" placeholder="e.g. 01-JAN-2024" />
+              <input type="text" id="issueDate" placeholder="E.G. 01-JAN-2024" />
             </div>
             <div>
               <label>Expiry Date</label>
-              <input type="text" id="expiryDate" placeholder="e.g. 01-JAN-2034" />
+              <input type="text" id="expiryDate" placeholder="E.G. 01-JAN-2034" />
             </div>
             <div class="full">
               <label>Trade Name / Business</label>
@@ -624,7 +649,7 @@
             <div>
               <label>Year</label>
               <select id="year">
-                <option value="">-- Select --</option>
+                <option value="">-- SELECT --</option>
                 <option value="2022">2022</option>
                 <option value="2023">2023</option>
                 <option value="2024">2024</option>
@@ -652,13 +677,13 @@
         <div class="card">
           <div class="section-title">Trademark Image (Optional)</div>
           <div class="file-area" id="dropZone">
-            <p>Click or drag & drop image here</p>
-            <p class="note">PNG, JPG, JPEG • Max recommended 2MB</p>
+            <p>Click or Drag & Drop Image Here</p>
+            <p class="note">PNG, JPG, JPEG • Max Recommended 2MB</p>
             <input type="file" id="imageFile" accept="image/*" />
             <img id="preview" class="preview" alt="Preview" />
           </div>
-          <div style="margin-top:14px;">
-            <label>Fallback text (if no image)</label>
+          <div style="margin-top:12px;">
+            <label>Fallback Text (If No Image)</label>
             <input type="text" id="noImg" value="[NO IMAGE PROVIDED]" />
           </div>
         </div>
@@ -667,7 +692,7 @@
           <div class="section-title">Backend Configuration</div>
           <div>
             <label>Apps Script Web App URL <span class="req">*</span></label>
-            <input type="url" id="webAppUrl" required placeholder="https://script.google.com/macros/s/XXXX/exec" />
+            <input type="url" id="webAppUrl" required placeholder="HTTPS://SCRIPT.GOOGLE.COM/MACROS/S/XXXX/EXEC" style="text-transform:none;" />
             <p class="note">Paste the Web App deployment URL from your Google Apps Script project.</p>
           </div>
         </div>
@@ -682,7 +707,7 @@
     </div>
   </div>
 
-  <footer>BrandEx Law Associates · Trademark Application Processor</footer>
+  <footer>Brandex Law Associates · Trademark Application Processor · CMS</footer>
 
   <script>
     function openForm() {
@@ -750,6 +775,17 @@
       document.getElementById('year').value = '2026';
     }
 
+    // Force UPPERCASE on all text inputs (except URL)
+    document.querySelectorAll('input[type="text"], textarea').forEach(el => {
+      if (el.id === 'webAppUrl') return;
+      el.addEventListener('input', () => {
+        const start = el.selectionStart;
+        const end = el.selectionEnd;
+        el.value = el.value.toUpperCase();
+        el.setSelectionRange(start, end);
+      });
+    });
+
     document.getElementById('tmForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const webAppUrl = document.getElementById('webAppUrl').value.trim();
@@ -761,24 +797,25 @@
       submitBtn.disabled = true;
       showStatus('Processing... Please wait (this may take 15-40 seconds).', 'info');
 
+      // Always send CAPITAL values
       const payload = {
         action: 'generateFromForm',
-        folder: document.getElementById('folder').value.trim(),
-        tm: document.getElementById('tm').value.trim(),
-        classNo: document.getElementById('classNo').value.trim(),
-        classDesc: document.getElementById('classDesc').value.trim(),
-        appType: document.getElementById('appType').value,
-        appName: document.getElementById('appName').value.trim(),
-        appSo: document.getElementById('appSo').value.trim(),
-        appCnic: document.getElementById('appCnic').value.trim(),
-        issueDate: document.getElementById('issueDate').value.trim(),
-        expiryDate: document.getElementById('expiryDate').value.trim(),
-        appTrade: document.getElementById('appTrade').value.trim(),
-        appAdd: document.getElementById('appAdd').value.trim(),
+        folder: document.getElementById('folder').value.trim().toUpperCase(),
+        tm: document.getElementById('tm').value.trim().toUpperCase(),
+        classNo: document.getElementById('classNo').value.trim().toUpperCase(),
+        classDesc: document.getElementById('classDesc').value.trim().toUpperCase(),
+        appType: document.getElementById('appType').value.toUpperCase(),
+        appName: document.getElementById('appName').value.trim().toUpperCase(),
+        appSo: document.getElementById('appSo').value.trim().toUpperCase(),
+        appCnic: document.getElementById('appCnic').value.trim().toUpperCase(),
+        issueDate: document.getElementById('issueDate').value.trim().toUpperCase(),
+        expiryDate: document.getElementById('expiryDate').value.trim().toUpperCase(),
+        appTrade: document.getElementById('appTrade').value.trim().toUpperCase(),
+        appAdd: document.getElementById('appAdd').value.trim().toUpperCase(),
         year: document.getElementById('year').value,
-        conName: document.getElementById('conName').value.trim(),
-        conAdd: document.getElementById('conAdd').value.trim(),
-        noImg: document.getElementById('noImg').value.trim() || '[NO IMAGE PROVIDED]'
+        conName: document.getElementById('conName').value.trim().toUpperCase(),
+        conAdd: document.getElementById('conAdd').value.trim().toUpperCase(),
+        noImg: (document.getElementById('noImg').value.trim() || '[NO IMAGE PROVIDED]').toUpperCase()
       };
 
       const file = fileInput.files[0];
