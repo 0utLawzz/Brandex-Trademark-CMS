@@ -38,7 +38,7 @@
       line-height: 1.5;
     }
 
-    /* ========== NAVBAR ==========
+    /* ========== NAVBAR ========== */
     .navbar {
       background: var(--bg2);
       height: 58px;
@@ -69,11 +69,11 @@
       text-transform: uppercase;
     }
 
-    /* ========== SCREENS ==========
+    /* ========== SCREENS ========== */
     .screen { display: none; }
     .screen.active { display: block; }
 
-    /* ========== WELCOME SCREEN ==========
+    /* ========== WELCOME SCREEN ========== */
     #welcome {
       min-height: calc(100vh - 58px);
       display: flex;
@@ -201,7 +201,7 @@
       opacity: 0.7;
     }
 
-    /* ========== FORM SCREEN ==========
+    /* ========== FORM SCREEN ========== */
     #formScreen {
       padding: 32px 16px 60px;
     }
@@ -506,7 +506,6 @@
       margin-top: 20px;
     }
 
-    /* Simple entrance animation */
     @keyframes slideUp {
       from { opacity: 0; transform: translateY(24px); }
       to { opacity: 1; transform: translateY(0); }
@@ -524,7 +523,7 @@
     <div class="nav-right">TRADEMARK PROCESSOR</div>
   </nav>
 
-  <!-- ========== WELCOME SCREEN ========== -->
+  <!-- WELCOME SCREEN -->
   <div id="welcome" class="screen active">
     <div class="welcome-stamp">VERSION 1.0</div>
     <h1 class="welcome-title">TRADEMARK<br>APPLICATION<br>PROCESSOR</h1>
@@ -551,7 +550,7 @@
     </div>
   </div>
 
-  <!-- ========== FORM SCREEN ========== -->
+  <!-- FORM SCREEN -->
   <div id="formScreen" class="screen">
     <div class="form-wrap">
       <div class="form-header">
@@ -686,7 +685,6 @@
   <footer>BrandEx Law Associates · Trademark Application Processor</footer>
 
   <script>
-    // Screen switching
     function openForm() {
       document.getElementById('welcome').classList.remove('active');
       document.getElementById('formScreen').classList.add('active');
@@ -700,7 +698,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // File handling
     const dropZone = document.getElementById('dropZone');
     const fileInput = document.getElementById('imageFile');
     const preview = document.getElementById('preview');
