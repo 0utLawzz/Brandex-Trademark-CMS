@@ -20,11 +20,9 @@ Built for **Brandex Law Associates**
 - [Overview](#overview)
 - [Features](#features)
 - [CMS Menu Structure](#cms-menu-structure)
+- [Related Repositories](#related-repositories)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
-  - [1. Enable GitHub Pages](#1-enable-github-pages)
-  - [2. Google Apps Script Setup](#2-google-apps-script-setup)
-  - [3. Deploy Web App](#3-deploy-web-app)
 - [How It Works](#how-it-works)
 - [Image Upload Behaviour](#image-upload-behaviour)
 - [File Structure](#file-structure)
@@ -36,17 +34,9 @@ Built for **Brandex Law Associates**
 
 ## Overview
 
-**Brandex Trademark CMS** is a clean, modern web-based Content Management System designed specifically for **Brandex Law Associates**.  
+**Brandex Trademark CMS** is a clean, modern web-based Content Management System designed specifically for **Brandex Law Associates**.
 
-It allows the team to:
-
-- Generate official **TM-1** and **TM-48** trademark application documents
-- Manage database records
-- Access salary reports and ledgers
-- Open Google Sheets directly
-- Use additional document tools
-
-All from a single, beautifully designed dashboard with a neobrutalism visual style.
+It allows the team to generate official **TM-1** and **TM-48** trademark application documents, manage database records, access salary reports, ledgers, document tools, and journal builds — all from one unified dashboard.
 
 ---
 
@@ -61,6 +51,7 @@ All from a single, beautifully designed dashboard with a neobrutalism visual sty
 | **Salary Tools** | Salary Logger + direct Google Sheet access |
 | **Ledgers** | Consultant Ledger & Personal Ledger |
 | **Document Enhancer** | Extra document processing tool |
+| **Journal Builds** | Direct access to Journal Builds & Management Drive folder |
 | **Responsive Design** | Works smoothly on desktop and mobile |
 | **Uppercase Enforcement** | All form inputs automatically convert to UPPERCASE |
 
@@ -73,13 +64,24 @@ All from a single, beautifully designed dashboard with a neobrutalism visual sty
 | **01** | Trademark™ Application | Main | Trademark Application Setup |
 | **02** | Database Record CMS | Main | Database Webview Application |
 | ↳ | Database Google Sheet (View) | Sub | Google Sheet Link |
-| **04** | Salary Logger | Main | Salary Reports & Management Form |
+| **03** | Salary Logger | Main | Salary Reports & Management Form |
 | ↳ | Salary Google Sheet (View) | Sub | Google Sheet Link |
-| **06** | Ledger Consultants (Google Sheet) | Main | Google Sheet Link |
-| **07** | Ledger Personal (Google Sheet) | Main | Google Sheet Link |
-| **08** | Tools: Document Enhancer | Main | Web Application |
+| **04** | Ledger Consultants (Google Sheet) | Main | Google Sheet Link |
+| **05** | Ledger Personal (Google Sheet) | Main | Google Sheet Link |
+| **06** | Tools: Document Enhancer | Main | Web Application |
+| **07** | Journal Builds & Management | Main | Google Drive Folder |
 
-> **Note:** Items under 02 and 04 are indented sub-links for better visual hierarchy.
+---
+
+## Related Repositories
+
+| Tool | Repository | Description |
+|------|------------|-------------|
+| **Database CMS** | [Brandex-Database-CMS](https://github.com/0utLawzz/Brandex-Database-CMS) | Fast, secure trademark case-management Datasheet (Supabase + React + Vercel) |
+| **Salary / Payslip** | [Brandex-Payslip-Generator](https://github.com/0utLawzz/Brandex-Payslip-Generator) | Attendance & salary report generator with Google Sheets sync |
+| **Document Enhancer** | [Document-Enhancer](https://github.com/0utLawzz/Document-Enhancer) | Privacy-first browser document enhancer (DocBright) |
+| **Consultant Ledger** | [Consultant-Ledger-v2](https://github.com/0utLawzz/Consultant-Ledger-v2) | Modern consultant ledger with live KPIs and CSV export |
+| **Drive Parser** | [Brandex-Drive-Parser](https://github.com/0utLawzz/Brandex-Drive-Parser) | Google Drive folder parser for trademark case files |
 
 ---
 
@@ -104,45 +106,33 @@ All from a single, beautifully designed dashboard with a neobrutalism visual sty
 5. Your CMS will be available at:  
    `https://0utLawzz.github.io/Brandex-Trademark-CMS/`
 
----
-
 ### 2. Google Apps Script Setup
 
 1. Open your existing Brandex Google Apps Script project
-2. Create a new file or replace the content of the form handler
-3. Copy the entire content from `apps-script-form-handler.gs`
-4. Make sure the following helper functions already exist in your project:
-   - `generateUniqueSerial`
-   - `getRowData`
-   - `validateRequiredData`
-   - `getImageFromDriveId`
-   - `replaceTextWithImage`
-   - `escapeRegex`
-
----
+2. Copy the entire content from `apps-script-form-handler.gs`
+3. Ensure the required helper functions already exist in the project
 
 ### 3. Deploy Web App
 
-1. In the Apps Script editor click **Deploy → New deployment**
-2. Select type: **Web app**
-3. Set **Execute as**: `Me`
-4. Set **Who has access**: `Anyone`
-5. Click **Deploy**
-6. Copy the Web App URL
-7. Paste the URL into the constant `APPS_SCRIPT_URL` inside `trademark-application.html` (if it has changed)
+1. In Apps Script → **Deploy → New deployment**
+2. Type: **Web app**
+3. Execute as: **Me**
+4. Who has access: **Anyone**
+5. Deploy and copy the Web App URL
+6. Update `APPS_SCRIPT_URL` in `trademark-application.html` if needed
 
 ---
 
 ## How It Works
 
-1. User fills the **Trademark Application** form
+1. User fills the Trademark Application form
 2. Optional trademark image can be uploaded
-3. On submit, data is sent to Google Apps Script
-4. A new row is added to **Sheet1**
+3. Data is sent to Google Apps Script
+4. A new row is added to Sheet1
 5. A client folder is created in Google Drive
-6. TM-1 and TM-48 documents are generated from templates
+6. TM-1 and TM-48 documents are generated
 7. Uploaded image is saved inside the client folder using the folder name
-8. User receives direct links to the folder and both documents
+8. User receives direct links to the folder and documents
 
 ---
 
@@ -171,15 +161,13 @@ Brandex-Trademark-CMS/
 
 ## Contributing
 
-This is a private internal tool for **Brandex Law Associates**.  
+This is a private internal tool for **Brandex Law Associates**.
 
 If you are part of the team and want to suggest improvements:
 
 1. Create a new branch
 2. Make your changes
 3. Open a Pull Request with a clear description
-
-Please follow the existing code style and naming conventions.
 
 ---
 
