@@ -211,13 +211,32 @@
       background: #7A1F1F;
       color: #fff;
     }
+
+    /* Sub-button styling – clearly nested under parent */
     .menu-btn.secondary-link {
       background: var(--panel);
       color: var(--black);
-      opacity: 0.95;
+      opacity: 0.97;
       padding: 11px 16px;
-      margin-top: -4px;
+      margin-top: -6px;
+      margin-left: 42px;          /* increased indent */
+      width: calc(100% - 42px);
       font-size: 0.78rem;
+      box-shadow: 3px 3px 0 #0C0C0C;
+    }
+    .menu-btn.secondary-link:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 #0C0C0C;
+    }
+    .menu-btn.secondary-link:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0 0 0 #0C0C0C;
+    }
+    .menu-btn.secondary-link .btn-num {
+      width: 26px;
+      height: 26px;
+      font-size: 0.9rem;
+      border-width: 1.5px;
     }
 
     .btn-num {
@@ -317,9 +336,9 @@
         </div>
       </a>
 
-      <!-- 03 Database Google Sheet (View) (Gold) -->
+      <!-- Sub of 02 – Database Google Sheet -->
       <a class="menu-btn sheet secondary-link" href="https://docs.google.com/spreadsheets/d/1yu27k_3Z6cCJmcnQI52z1dIC52Zi9ZxaKlo9wJiNFiQ/edit?gid=229416165#gid=229416165" target="_blank" rel="noopener">
-        <span class="btn-num" style="width:28px;height:28px;font-size:0.95rem;">↳</span>
+        <span class="btn-num">↳</span>
         <div class="btn-content">
           <span class="btn-label">Database Google Sheet (View)</span>
           <div class="btn-links"><span>Google Sheet Link</span></div>
@@ -335,9 +354,9 @@
         </div>
       </a>
 
-      <!-- 05 Salary Google Sheet (View) (Gold) -->
+      <!-- Sub of 04 – Salary Google Sheet -->
       <a class="menu-btn sheet secondary-link" href="https://docs.google.com/spreadsheets/d/1sc8G95EXoc6ZxC73A8qwAP068O_Z6A19YvTkgpC84SI/edit?gid=1569630085#gid=1569630085" target="_blank" rel="noopener">
-        <span class="btn-num" style="width:28px;height:28px;font-size:0.95rem;">↳</span>
+        <span class="btn-num">↳</span>
         <div class="btn-content">
           <span class="btn-label">Salary Google Sheet (View)</span>
           <div class="btn-links"><span>Google Sheet Link</span></div>
