@@ -270,7 +270,6 @@
       background: var(--accent2);
       color: #fff;
     }
-    .note { font-size: 0.7rem; color: #666; margin-top: 4px; }
     footer {
       text-align: center;
       padding: 16px;
@@ -412,7 +411,7 @@
 
   <script>
     // ============================================================
-    //  SETTINGS — Apps Script Web App URL (edit only here)
+    //  SETTINGS — Apps Script Web App URL
     // ============================================================
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxod3G9xT8acKrQC8HbuRQbGEjjfvu8NBbYNTDFds4osUtZNv290r6q9h8Nf8FH2ZT9mQ/exec";
     // ============================================================
@@ -469,7 +468,6 @@
       document.getElementById('year').value = '2026';
     }
 
-    // Force UPPERCASE while typing
     document.querySelectorAll('input[type="text"], textarea').forEach(el => {
       el.addEventListener('input', () => {
         const start = el.selectionStart;
