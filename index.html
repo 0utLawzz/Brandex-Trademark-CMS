@@ -104,6 +104,11 @@
       box-shadow: var(--shadow-sm);
       margin-bottom: 20px;
       display: inline-block;
+      animation: stampIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    @keyframes stampIn {
+      0% { opacity: 0; transform: rotate(-12deg) scale(0.7); }
+      100% { opacity: 1; transform: rotate(-5deg) scale(1); }
     }
     .welcome-title {
       font-family: 'Bebas Neue', sans-serif;
@@ -112,6 +117,7 @@
       text-align: center;
       line-height: 1.05;
       margin-bottom: 10px;
+      animation: fadeUp 0.5s ease 0.15s both;
     }
     .welcome-sub {
       font-size: 0.9rem;
@@ -121,13 +127,18 @@
       max-width: 520px;
       margin-bottom: 32px;
       letter-spacing: 0.5px;
+      animation: fadeUp 0.5s ease 0.25s both;
+    }
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(12px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
     .menu-buttons {
       display: flex;
       flex-direction: column;
       gap: 12px;
       width: 100%;
-      max-width: 520px;
+      max-width: 560px;
     }
     .menu-btn {
       font-family: 'DM Mono', monospace;
@@ -142,23 +153,48 @@
       color: var(--black);
       cursor: pointer;
       box-shadow: var(--shadow);
-      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease, filter 0.15s ease;
       text-align: left;
       display: flex;
       align-items: center;
       gap: 14px;
       text-decoration: none;
+      animation: fadeUp 0.45s ease both;
+      position: relative;
+      overflow: hidden;
     }
+    .menu-btn:nth-child(1) { animation-delay: 0.30s; }
+    .menu-btn:nth-child(2) { animation-delay: 0.36s; }
+    .menu-btn:nth-child(3) { animation-delay: 0.42s; }
+    .menu-btn:nth-child(4) { animation-delay: 0.48s; }
+    .menu-btn:nth-child(5) { animation-delay: 0.54s; }
+    .menu-btn:nth-child(6) { animation-delay: 0.60s; }
+    .menu-btn:nth-child(7) { animation-delay: 0.66s; }
+    .menu-btn:nth-child(8) { animation-delay: 0.72s; }
+
     .menu-btn:hover {
       transform: translate(-3px, -3px);
       box-shadow: 8px 8px 0 #0C0C0C;
+      filter: brightness(1.05);
     }
     .menu-btn:active {
       transform: translate(3px, 3px);
       box-shadow: 0 0 0 #0C0C0C;
+      transition-duration: 0.06s;
+    }
+    .menu-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.18) 50%, transparent 70%);
+      transform: translateX(-120%);
+      transition: transform 0.5s ease;
+    }
+    .menu-btn:hover::after {
+      transform: translateX(120%);
     }
 
-    /* Color variants matching dashboard */
+    /* Color variants */
     .menu-btn.live {
       background: #C94A00;
       color: #fff;
@@ -178,8 +214,8 @@
     .menu-btn.secondary-link {
       background: var(--panel);
       color: var(--black);
-      opacity: 0.9;
-      padding: 10px 16px;
+      opacity: 0.95;
+      padding: 11px 16px;
       margin-top: -4px;
       font-size: 0.78rem;
     }
@@ -192,8 +228,12 @@
       border: 2px solid currentColor;
       border-radius: 4px;
       flex-shrink: 0;
+      transition: transform 0.2s ease;
     }
-    .btn-content { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .menu-btn:hover .btn-num {
+      transform: scale(1.08) rotate(-3deg);
+    }
+    .btn-content { flex: 1; display: flex; flex-direction: column; gap: 5px; }
     .btn-label { font-size: 0.9rem; }
     .btn-links {
       display: flex;
@@ -204,11 +244,31 @@
     .btn-links span {
       font-size: 0.58rem;
       letter-spacing: 0.8px;
-      padding: 2px 7px;
+      padding: 2px 8px;
       border: 1.5px solid currentColor;
       border-radius: 3px;
-      opacity: 0.9;
+      opacity: 0.95;
+      transition: background 0.2s ease, color 0.2s ease;
     }
+    .menu-btn.live .btn-links span {
+      background: rgba(255,255,255,0.18);
+    }
+    .menu-btn.deploy .btn-links span {
+      background: rgba(255,255,255,0.18);
+    }
+    .menu-btn.sheet .btn-links span {
+      background: rgba(12,12,12,0.12);
+    }
+    .menu-btn.sheet-dark .btn-links span {
+      background: rgba(255,255,255,0.15);
+    }
+    .menu-btn:hover .btn-links span {
+      background: rgba(255,255,255,0.28);
+    }
+    .menu-btn.sheet:hover .btn-links span {
+      background: rgba(12,12,12,0.2);
+    }
+
     footer {
       text-align: center;
       padding: 18px;
@@ -239,73 +299,75 @@
 
     <div class="menu-buttons">
 
-      <!-- 01 LIVE FORM (Orange) -->
+      <!-- 01 Trademark™ Application (Orange) -->
       <a class="menu-btn live" href="trademark-application.html">
         <span class="btn-num">01</span>
         <div class="btn-content">
-          <span class="btn-label">Trademark Application</span>
-          <div class="btn-links"><span>LIVE FORM</span></div>
+          <span class="btn-label">Trademark™ Application</span>
+          <div class="btn-links"><span>Trademark Application Setup</span></div>
         </div>
       </a>
 
-      <!-- 02 Database Deploy (Teal) -->
+      <!-- 02 Database Record CMS (Teal) -->
       <a class="menu-btn deploy" href="https://brandexsheet.vercel.app/" target="_blank" rel="noopener">
         <span class="btn-num">02</span>
         <div class="btn-content">
-          <span class="btn-label">Database Record</span>
-          <div class="btn-links"><span>DEPLOY</span></div>
+          <span class="btn-label">Database Record CMS</span>
+          <div class="btn-links"><span>Database Webview Application</span></div>
         </div>
       </a>
-      <!-- Database Sheet (Gold) -->
+
+      <!-- 03 Database Google Sheet (View) (Gold) -->
       <a class="menu-btn sheet secondary-link" href="https://docs.google.com/spreadsheets/d/1yu27k_3Z6cCJmcnQI52z1dIC52Zi9ZxaKlo9wJiNFiQ/edit?gid=229416165#gid=229416165" target="_blank" rel="noopener">
         <span class="btn-num" style="width:28px;height:28px;font-size:0.95rem;">↳</span>
         <div class="btn-content">
-          <span class="btn-label">Database Sheet (Direct)</span>
-          <div class="btn-links"><span>SHEET</span></div>
+          <span class="btn-label">Database Google Sheet (View)</span>
+          <div class="btn-links"><span>Google Sheet Link</span></div>
         </div>
       </a>
 
-      <!-- 03 Salary Deploy (Teal) -->
+      <!-- 04 Salary Logger (Teal) -->
       <a class="menu-btn deploy" href="https://salary-report-generator.vercel.app/" target="_blank" rel="noopener">
-        <span class="btn-num">03</span>
+        <span class="btn-num">04</span>
         <div class="btn-content">
-          <span class="btn-label">Salary Report</span>
-          <div class="btn-links"><span>DEPLOY</span></div>
+          <span class="btn-label">Salary Logger</span>
+          <div class="btn-links"><span>Salary Reports & Management Form</span></div>
         </div>
       </a>
-      <!-- Salary Sheet (Gold) -->
+
+      <!-- 05 Salary Google Sheet (View) (Gold) -->
       <a class="menu-btn sheet secondary-link" href="https://docs.google.com/spreadsheets/d/1sc8G95EXoc6ZxC73A8qwAP068O_Z6A19YvTkgpC84SI/edit?gid=1569630085#gid=1569630085" target="_blank" rel="noopener">
         <span class="btn-num" style="width:28px;height:28px;font-size:0.95rem;">↳</span>
         <div class="btn-content">
-          <span class="btn-label">Salary Sheet (Direct)</span>
-          <div class="btn-links"><span>SHEET</span></div>
+          <span class="btn-label">Salary Google Sheet (View)</span>
+          <div class="btn-links"><span>Google Sheet Link</span></div>
         </div>
       </a>
 
-      <!-- 04 Consultant Ledger (Maroon) -->
+      <!-- 06 Ledger Consultants (Maroon) -->
       <a class="menu-btn sheet-dark" href="https://docs.google.com/spreadsheets/d/1tZqytFeYCnFCxVqJWTIUqJC8qwpop_J6IkuNwbr9nfw/edit?gid=236529280#gid=236529280" target="_blank" rel="noopener">
-        <span class="btn-num">04</span>
-        <div class="btn-content">
-          <span class="btn-label">Consultant Ledger</span>
-          <div class="btn-links"><span>SHEET</span></div>
-        </div>
-      </a>
-
-      <!-- 05 Personal Ledger (Gold) -->
-      <a class="menu-btn sheet" href="https://docs.google.com/spreadsheets/d/1jsoevY_0tSrayxPNTZjRU5LBB9LKTFHa2hrDG57sc0k/edit?gid=1788212026#gid=1788212026" target="_blank" rel="noopener">
-        <span class="btn-num">05</span>
-        <div class="btn-content">
-          <span class="btn-label">Personal Ledger</span>
-          <div class="btn-links"><span>SHEET</span></div>
-        </div>
-      </a>
-
-      <!-- 06 Document Enhancer (Teal) -->
-      <a class="menu-btn deploy" href="https://0utlawzz.github.io/Document-Enhancer/" target="_blank" rel="noopener">
         <span class="btn-num">06</span>
         <div class="btn-content">
-          <span class="btn-label">Document Enhancer</span>
-          <div class="btn-links"><span>DEPLOY</span></div>
+          <span class="btn-label">Ledger Consultants (Google Sheet)</span>
+          <div class="btn-links"><span>Google Sheet Link</span></div>
+        </div>
+      </a>
+
+      <!-- 07 Ledger Personal (Gold) -->
+      <a class="menu-btn sheet" href="https://docs.google.com/spreadsheets/d/1jsoevY_0tSrayxPNTZjRU5LBB9LKTFHa2hrDG57sc0k/edit?gid=1788212026#gid=1788212026" target="_blank" rel="noopener">
+        <span class="btn-num">07</span>
+        <div class="btn-content">
+          <span class="btn-label">Ledger Personal (Google Sheet)</span>
+          <div class="btn-links"><span>Google Sheet Link</span></div>
+        </div>
+      </a>
+
+      <!-- 08 Tools: Document Enhancer (Teal) -->
+      <a class="menu-btn deploy" href="https://0utlawzz.github.io/Document-Enhancer/" target="_blank" rel="noopener">
+        <span class="btn-num">08</span>
+        <div class="btn-content">
+          <span class="btn-label">Tools: Document Enhancer</span>
+          <div class="btn-links"><span>Web Application</span></div>
         </div>
       </a>
 

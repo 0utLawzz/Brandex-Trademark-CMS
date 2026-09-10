@@ -41,21 +41,7 @@ function processFormSubmission(data) {
   var TM1_TEMPLATE_ID  = "1XE42w12VjBMUW7jdvRU-HHdhmFd6yTB7HtL6H27FCnE";
   var TM48_TEMPLATE_ID = "1EDAbs37UZekCrrNn3JKYWZcjMiuBW6bDUsfTg5AVAhc";
 
-  // Upload image if provided
-  var imageId = "";
-  if (data.imageBase64) {
-    var base64 = data.imageBase64.split(",")[1];
-    var bytes  = Utilities.base64Decode(base64);
-    var blob   = Utilities.newBlob(bytes, data.imageMime || "image/jpeg", data.imageName || "trademark.jpg");
-    var folder = DriveApp.getFolderById(MAIN_FOLDER_ID);
-    var file   = folder.createFile(blob);
-    try {
-      file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-    } catch (e) {}
-    imageId = file.getId();
-  }
-
-  // Append new row
+  // Append new row first (imageId will be filled after folder creation)
   var lastRow = sheet.getLastRow() + 1;
   var serial  = generateUniqueSerial(sheet);
   var today   = Utilities.formatDate(new Date(), "Asia/Karachi", "EEEE, dd MMMM yyyy");
@@ -80,17 +66,24 @@ function processFormSubmission(data) {
     data.year || "",       // Q
     data.conName || "",    // R
     data.conAdd || "",     // S
-    imageId,              // T
+    "",                    // T (imageId - filled later)
     data.noImg || "[NO IMAGE PROVIDED]" // U
   ];
 
   sheet.getRange(lastRow, 1, 1, 21).setValues([rowValues]);
 
-  // Process
+  // Process (creates folder, uploads image into that folder, generates docs)
   sheet.getRange(lastRow, 1).setValue("ON IT 👉");
   SpreadsheetApp.flush();
 
-  var processResult = processRowAndReturnLinks(sheet, lastRow, MAIN_FOLDER_ID, TM1_TEMPLATE_ID, TM48_TEMPLATE_ID);
+  var processResult = processRowAndReturnLinks(
+    sheet,
+    lastRow,
+    MAIN_FOLDER_ID,
+    TM1_TEMPLATE_ID,
+    TM48_TEMPLATE_ID,
+    data // pass original form data so we can handle image inside the client folder
+  );
 
   sheet.getRange(lastRow, 1).setValue("DONE ✅");
 
@@ -103,7 +96,7 @@ function processFormSubmission(data) {
   };
 }
 
-function processRowAndReturnLinks(sheet, row, mainFolderId, tm1TemplateId, tm48TemplateId) {
+function processRowAndReturnLinks(sheet, row, mainFolderId, tm1TemplateId, tm48TemplateId, formData) {
   var rowData = getRowData(sheet, row);
   validateRequiredData(rowData, row);
 
@@ -128,7 +121,42 @@ function processRowAndReturnLinks(sheet, row, mainFolderId, tm1TemplateId, tm48T
     if (!newFolder) throw new Error("Folder create/find failed: " + rowData.folder);
   }
 
-  var tmImageBlob = getImageFromDriveId(rowData.img);
+  // ---- IMAGE HANDLING: place inside the generated client folder ----
+  // Filename uses the folder / client name
+  var imageId = "";
+  var tmImageBlob = null;
+
+  if (formData && formData.imageBase64) {
+    try {
+      var base64 = formData.imageBase64.split(",")[1];
+      var bytes  = Utilities.base64Decode(base64);
+      var ext = "jpg";
+      if (formData.imageMime) {
+        if (formData.imageMime.indexOf("png") !== -1) ext = "png";
+        else if (formData.imageMime.indexOf("gif") !== -1) ext = "gif";
+        else if (formData.imageMime.indexOf("webp") !== -1) ext = "webp";
+      }
+      var safeFolderName = (rowData.folder || "trademark").toString().replace(/[\\/:*?"<>|]/g, "_").trim();
+      var imageFileName = safeFolderName + "_logo." + ext;
+
+      var blob = Utilities.newBlob(bytes, formData.imageMime || "image/jpeg", imageFileName);
+      var file = newFolder.createFile(blob);
+      try {
+        file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+      } catch (e) {}
+      imageId = file.getId();
+      tmImageBlob = blob;
+
+      // Update the sheet with the correct image ID now that it lives in the client folder
+      sheet.getRange(row, 20).setValue(imageId); // column T
+    } catch (imgErr) {
+      // continue without image if upload fails
+      Logger.log("Image upload failed: " + imgErr);
+    }
+  } else if (rowData.img) {
+    // fallback for already existing image IDs
+    tmImageBlob = getImageFromDriveId(rowData.img);
+  }
 
   var mergeData = {
     "{{SERIAL}}":        rowData.serialNo    || "",
