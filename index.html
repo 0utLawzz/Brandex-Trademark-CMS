@@ -18,7 +18,6 @@
       --accent2: #0D9970;
       --accent3: #D4A800;
       --maroon: #7A1F1F;
-      --teal: #0A6B52;
       --shadow: 5px 5px 0 #0C0C0C;
       --shadow-sm: 3px 3px 0 #0C0C0C;
       --radius: 6px;
@@ -104,10 +103,10 @@
       box-shadow: var(--shadow-sm);
       margin-bottom: 20px;
       display: inline-block;
-      animation: stampIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      animation: stampIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
     }
     @keyframes stampIn {
-      0% { opacity: 0; transform: rotate(-12deg) scale(0.7); }
+      0% { opacity: 0; transform: rotate(-14deg) scale(0.6); }
       100% { opacity: 1; transform: rotate(-5deg) scale(1); }
     }
     .welcome-title {
@@ -117,7 +116,7 @@
       text-align: center;
       line-height: 1.05;
       margin-bottom: 10px;
-      animation: fadeUp 0.5s ease 0.15s both;
+      animation: fadeUp 0.45s ease 0.12s both;
     }
     .welcome-sub {
       font-size: 0.9rem;
@@ -127,10 +126,10 @@
       max-width: 520px;
       margin-bottom: 32px;
       letter-spacing: 0.5px;
-      animation: fadeUp 0.5s ease 0.25s both;
+      animation: fadeUp 0.45s ease 0.22s both;
     }
     @keyframes fadeUp {
-      0% { opacity: 0; transform: translateY(12px); }
+      0% { opacity: 0; transform: translateY(14px); }
       100% { opacity: 1; transform: translateY(0); }
     }
     .menu-buttons {
@@ -153,91 +152,41 @@
       color: var(--black);
       cursor: pointer;
       box-shadow: var(--shadow);
-      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease, filter 0.15s ease;
+      transition: transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.14s ease;
       text-align: left;
       display: flex;
       align-items: center;
       gap: 14px;
       text-decoration: none;
-      animation: fadeUp 0.45s ease both;
+      animation: fadeUp 0.4s ease both;
       position: relative;
       overflow: hidden;
     }
-    .menu-btn:nth-child(1) { animation-delay: 0.30s; }
-    .menu-btn:nth-child(2) { animation-delay: 0.36s; }
-    .menu-btn:nth-child(3) { animation-delay: 0.42s; }
-    .menu-btn:nth-child(4) { animation-delay: 0.48s; }
-    .menu-btn:nth-child(5) { animation-delay: 0.54s; }
-    .menu-btn:nth-child(6) { animation-delay: 0.60s; }
-    .menu-btn:nth-child(7) { animation-delay: 0.66s; }
-    .menu-btn:nth-child(8) { animation-delay: 0.72s; }
-    .menu-btn:nth-child(9) { animation-delay: 0.78s; }
+    .menu-btn:nth-child(1) { animation-delay: 0.28s; }
+    .menu-btn:nth-child(2) { animation-delay: 0.34s; }
+    .menu-btn:nth-child(3) { animation-delay: 0.40s; }
+    .menu-btn:nth-child(4) { animation-delay: 0.46s; }
+    .menu-btn:nth-child(5) { animation-delay: 0.52s; }
+    .menu-btn:nth-child(6) { animation-delay: 0.58s; }
+    .menu-btn:nth-child(7) { animation-delay: 0.64s; }
+    .menu-btn:nth-child(8) { animation-delay: 0.70s; }
 
     .menu-btn:hover {
       transform: translate(-3px, -3px);
       box-shadow: 8px 8px 0 #0C0C0C;
-      filter: brightness(1.05);
     }
     .menu-btn:active {
       transform: translate(3px, 3px);
       box-shadow: 0 0 0 #0C0C0C;
-      transition-duration: 0.06s;
+      transition-duration: 0.05s;
     }
-    .menu-btn::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.18) 50%, transparent 70%);
-      transform: translateX(-120%);
-      transition: transform 0.5s ease;
+    .menu-btn.clicked {
+      animation: pressPulse 0.22s ease;
     }
-    .menu-btn:hover::after {
-      transform: translateX(120%);
-    }
-
-    /* Color variants */
-    .menu-btn.live {
-      background: #C94A00;
-      color: #fff;
-    }
-    .menu-btn.deploy {
-      background: #0D9970;
-      color: #fff;
-    }
-    .menu-btn.sheet {
-      background: #D4A800;
-      color: #0C0C0C;
-    }
-    .menu-btn.sheet-dark {
-      background: #7A1F1F;
-      color: #fff;
-    }
-
-    /* Sub-button styling */
-    .menu-btn.secondary-link {
-      background: var(--panel);
-      color: var(--black);
-      opacity: 0.97;
-      padding: 11px 16px;
-      margin-top: -6px;
-      margin-left: 42px;
-      width: calc(100% - 42px);
-      font-size: 0.78rem;
-      box-shadow: 3px 3px 0 #0C0C0C;
-    }
-    .menu-btn.secondary-link:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 5px 5px 0 #0C0C0C;
-    }
-    .menu-btn.secondary-link:active {
-      transform: translate(2px, 2px);
-      box-shadow: 0 0 0 #0C0C0C;
-    }
-    .menu-btn.secondary-link .btn-num {
-      width: 26px;
-      height: 26px;
-      font-size: 0.9rem;
-      border-width: 1.5px;
+    @keyframes pressPulse {
+      0% { transform: translate(0,0); }
+      45% { transform: translate(4px, 4px); box-shadow: 0 0 0 #0C0C0C; }
+      100% { transform: translate(0,0); }
     }
 
     .btn-num {
@@ -248,45 +197,35 @@
       border: 2px solid currentColor;
       border-radius: 4px;
       flex-shrink: 0;
-      transition: transform 0.2s ease;
-    }
-    .menu-btn:hover .btn-num {
-      transform: scale(1.08) rotate(-3deg);
     }
     .btn-content { flex: 1; display: flex; flex-direction: column; gap: 5px; }
     .btn-label { font-size: 0.9rem; }
-    .btn-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 2px;
-    }
-    .btn-links span {
+    .btn-links { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    /* Colored tags */
+    .tag {
       font-size: 0.58rem;
-      letter-spacing: 0.8px;
-      padding: 2px 8px;
-      border: 1.5px solid currentColor;
+      letter-spacing: 0.7px;
+      padding: 3px 8px;
+      border: 1.5px solid var(--black);
       border-radius: 3px;
-      opacity: 0.95;
-      transition: background 0.2s ease, color 0.2s ease;
+      font-weight: 500;
     }
-    .menu-btn.live .btn-links span {
-      background: rgba(255,255,255,0.18);
+    .tag-live {
+      background: #C94A00;
+      color: #fff;
     }
-    .menu-btn.deploy .btn-links span {
-      background: rgba(255,255,255,0.18);
+    .tag-deploy {
+      background: #0D9970;
+      color: #fff;
     }
-    .menu-btn.sheet .btn-links span {
-      background: rgba(12,12,12,0.12);
+    .tag-sheet {
+      background: #D4A800;
+      color: #0C0C0C;
     }
-    .menu-btn.sheet-dark .btn-links span {
-      background: rgba(255,255,255,0.15);
-    }
-    .menu-btn:hover .btn-links span {
-      background: rgba(255,255,255,0.28);
-    }
-    .menu-btn.sheet:hover .btn-links span {
-      background: rgba(12,12,12,0.2);
+    .tag-tool {
+      background: #7A1F1F;
+      color: #fff;
     }
 
     footer {
@@ -319,84 +258,75 @@
 
     <div class="menu-buttons">
 
-      <!-- 01 Trademark™ Application -->
-      <a class="menu-btn live" href="trademark-application.html">
+      <!-- 1 -->
+      <a class="menu-btn" href="trademark-application.html" onclick="playClick(this)">
         <span class="btn-num">01</span>
         <div class="btn-content">
           <span class="btn-label">Trademark™ Application</span>
-          <div class="btn-links"><span>Trademark Application Setup</span></div>
+          <div class="btn-links"><span class="tag tag-live">Trademark Application Setup</span></div>
         </div>
       </a>
 
-      <!-- 02 Database Record CMS -->
-      <a class="menu-btn deploy" href="https://brandexsheet.vercel.app/" target="_blank" rel="noopener">
+      <!-- 2 -->
+      <a class="menu-btn" href="https://brandexsheet.vercel.app/" target="_blank" rel="noopener" onclick="playClick(this)">
         <span class="btn-num">02</span>
         <div class="btn-content">
           <span class="btn-label">Database Record CMS</span>
-          <div class="btn-links"><span>Database Webview Application</span></div>
+          <div class="btn-links"><span class="tag tag-deploy">Database Webview Application</span></div>
         </div>
       </a>
 
-      <!-- Sub of 02 -->
-      <a class="menu-btn sheet secondary-link" href="https://docs.google.com/spreadsheets/d/1yu27k_3Z6cCJmcnQI52z1dIC52Zi9ZxaKlo9wJiNFiQ/edit?gid=229416165#gid=229416165" target="_blank" rel="noopener">
-        <span class="btn-num">↳</span>
-        <div class="btn-content">
-          <span class="btn-label">Database Google Sheet (View)</span>
-          <div class="btn-links"><span>Google Sheet Link</span></div>
-        </div>
-      </a>
-
-      <!-- 03 Salary Logger -->
-      <a class="menu-btn deploy" href="https://salary-report-generator.vercel.app/" target="_blank" rel="noopener">
+      <!-- 3 -->
+      <a class="menu-btn" href="https://docs.google.com/spreadsheets/d/1yu27k_3Z6cCJmcnQI52z1dIC52Zi9ZxaKlo9wJiNFiQ/edit?gid=229416165#gid=229416165" target="_blank" rel="noopener" onclick="playClick(this)">
         <span class="btn-num">03</span>
         <div class="btn-content">
-          <span class="btn-label">Salary Logger</span>
-          <div class="btn-links"><span>Salary Reports & Management Form</span></div>
+          <span class="btn-label">Database Google Sheet (View)</span>
+          <div class="btn-links"><span class="tag tag-sheet">Google Sheet Link</span></div>
         </div>
       </a>
 
-      <!-- Sub of 03 -->
-      <a class="menu-btn sheet secondary-link" href="https://docs.google.com/spreadsheets/d/1sc8G95EXoc6ZxC73A8qwAP068O_Z6A19YvTkgpC84SI/edit?gid=1569630085#gid=1569630085" target="_blank" rel="noopener">
-        <span class="btn-num">↳</span>
-        <div class="btn-content">
-          <span class="btn-label">Salary Google Sheet (View)</span>
-          <div class="btn-links"><span>Google Sheet Link</span></div>
-        </div>
-      </a>
-
-      <!-- 04 Ledger Consultants -->
-      <a class="menu-btn sheet-dark" href="https://docs.google.com/spreadsheets/d/1tZqytFeYCnFCxVqJWTIUqJC8qwpop_J6IkuNwbr9nfw/edit?gid=236529280#gid=236529280" target="_blank" rel="noopener">
+      <!-- 4 -->
+      <a class="menu-btn" href="https://salary-report-generator.vercel.app/" target="_blank" rel="noopener" onclick="playClick(this)">
         <span class="btn-num">04</span>
         <div class="btn-content">
-          <span class="btn-label">Ledger Consultants (Google Sheet)</span>
-          <div class="btn-links"><span>Google Sheet Link</span></div>
+          <span class="btn-label">Salary Logger</span>
+          <div class="btn-links"><span class="tag tag-deploy">Salary Reports & Management Form</span></div>
         </div>
       </a>
 
-      <!-- 05 Ledger Personal -->
-      <a class="menu-btn sheet" href="https://docs.google.com/spreadsheets/d/1jsoevY_0tSrayxPNTZjRU5LBB9LKTFHa2hrDG57sc0k/edit?gid=1788212026#gid=1788212026" target="_blank" rel="noopener">
+      <!-- 5 -->
+      <a class="menu-btn" href="https://docs.google.com/spreadsheets/d/1sc8G95EXoc6ZxC73A8qwAP068O_Z6A19YvTkgpC84SI/edit?gid=1569630085#gid=1569630085" target="_blank" rel="noopener" onclick="playClick(this)">
         <span class="btn-num">05</span>
         <div class="btn-content">
-          <span class="btn-label">Ledger Personal (Google Sheet)</span>
-          <div class="btn-links"><span>Google Sheet Link</span></div>
+          <span class="btn-label">Salary Google Sheet (View)</span>
+          <div class="btn-links"><span class="tag tag-sheet">Google Sheet Link</span></div>
         </div>
       </a>
 
-      <!-- 06 Document Enhancer -->
-      <a class="menu-btn deploy" href="https://0utlawzz.github.io/Document-Enhancer/" target="_blank" rel="noopener">
+      <!-- 6 -->
+      <a class="menu-btn" href="https://docs.google.com/spreadsheets/d/1tZqytFeYCnFCxVqJWTIUqJC8qwpop_J6IkuNwbr9nfw/edit?gid=236529280#gid=236529280" target="_blank" rel="noopener" onclick="playClick(this)">
         <span class="btn-num">06</span>
         <div class="btn-content">
-          <span class="btn-label">Tools: Document Enhancer</span>
-          <div class="btn-links"><span>Web Application</span></div>
+          <span class="btn-label">Ledger Consultants (Google Sheet)</span>
+          <div class="btn-links"><span class="tag tag-sheet">Google Sheet Link</span></div>
         </div>
       </a>
 
-      <!-- 07 Journal Builds & Management -->
-      <a class="menu-btn sheet-dark" href="https://drive.google.com/drive/u/0/folders/1v9Fesbb_dT7PqljlQQ4fP87fcesEv0mx" target="_blank" rel="noopener">
+      <!-- 7 -->
+      <a class="menu-btn" href="https://docs.google.com/spreadsheets/d/1jsoevY_0tSrayxPNTZjRU5LBB9LKTFHa2hrDG57sc0k/edit?gid=1788212026#gid=1788212026" target="_blank" rel="noopener" onclick="playClick(this)">
         <span class="btn-num">07</span>
         <div class="btn-content">
-          <span class="btn-label">Journal Builds & Management</span>
-          <div class="btn-links"><span>Google Drive Folder</span></div>
+          <span class="btn-label">Ledger Personal (Google Sheet)</span>
+          <div class="btn-links"><span class="tag tag-sheet">Google Sheet Link</span></div>
+        </div>
+      </a>
+
+      <!-- 8 -->
+      <a class="menu-btn" href="https://0utlawzz.github.io/Document-Enhancer/" target="_blank" rel="noopener" onclick="playClick(this)">
+        <span class="btn-num">08</span>
+        <div class="btn-content">
+          <span class="btn-label">Tools: Document Enhancer</span>
+          <div class="btn-links"><span class="tag tag-tool">Web Application</span></div>
         </div>
       </a>
 
@@ -404,5 +334,25 @@
   </div>
 
   <footer>Brandex Law Associates · CMS</footer>
+
+  <script>
+    function playClick(el) {
+      el.classList.add('clicked');
+      setTimeout(() => el.classList.remove('clicked'), 240);
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'square';
+        osc.frequency.value = 380;
+        gain.gain.setValueAtTime(0.07, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.07);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.07);
+      } catch (e) {}
+    }
+  </script>
 </body>
 </html>
