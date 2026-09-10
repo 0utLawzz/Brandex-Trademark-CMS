@@ -22,7 +22,7 @@ File: **`Brandex-MailMerge-Full.gs`**
 7. Description: `image-in-client-folder`
 8. Deploy
 9. Confirm Web App URL is still:  
-   `https://script.google.com/macros/s/AKfycbxod3G9xT8acKrQC8HbuRQbGEjjfvu8NBbYNTDFds4osUtZNv290r6q9h8Nf8FH2ZT9mQ/exec`
+   `https://script.google.com/macros/s/AKfycbwwhxQhjW4I5tbctGH3EfIOme7MDDD8yFATlv05j3b09x5YqWBpZtgi-UHWbYTzhUdhXQ/exec1
 
 ### What the form does with images
 
