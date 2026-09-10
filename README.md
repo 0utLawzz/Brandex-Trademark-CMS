@@ -1,6 +1,6 @@
 <div align="center">
 
-# Brandex Trademark CMS
+# Brandex IPO CMS
 
 **Professional Trademark & IP Registry Management System**  
 Built for **Brandex Law Associates**
