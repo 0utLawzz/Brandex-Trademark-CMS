@@ -246,6 +246,38 @@
     #status.success { background: #d4f5e9; border-color: var(--accent2); display: block; }
     #status.error { background: #fde8e4; border-color: var(--accent); display: block; }
     #status.info { background: #fff8d6; border-color: var(--accent3); display: block; }
+    .progress-wrap {
+      margin-top: 16px;
+      padding: 13px 15px;
+      border: 3px solid var(--black);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow-sm);
+      display: none;
+    }
+    .progress-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 9px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.8px;
+    }
+    .progress-track {
+      height: 18px;
+      border: 2.5px solid var(--black);
+      background: var(--bg-alt);
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--accent2);
+      border-right: 2px solid var(--black);
+      transition: width 0.28s ease;
+    }
     .links {
       margin-top: 11px;
       display: flex;
@@ -404,6 +436,16 @@
       </div>
     </form>
 
+    <div id="progressWrap" class="progress-wrap" aria-live="polite">
+      <div class="progress-top">
+        <span id="progressLabel">Preparing</span>
+        <span id="progressPercent">0%</span>
+      </div>
+      <div class="progress-track">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+    </div>
+
     <div id="status"></div>
   </div>
 
@@ -421,6 +463,12 @@
     const preview = document.getElementById('preview');
     const statusEl = document.getElementById('status');
     const submitBtn = document.getElementById('submitBtn');
+    const progressWrap = document.getElementById('progressWrap');
+    const progressBar = document.getElementById('progressBar');
+    const progressLabel = document.getElementById('progressLabel');
+    const progressPercent = document.getElementById('progressPercent');
+    let progressTimer = null;
+    let resultAudioCtx = null;
 
     dropZone.addEventListener('click', () => fileInput.click());
     dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
@@ -460,10 +508,95 @@
       statusEl.scrollIntoView({ behavior: 'smooth' });
     }
 
+    function updateProgress(percent, label) {
+      const safePercent = Math.max(0, Math.min(100, percent));
+      progressWrap.style.display = 'block';
+      progressBar.style.width = `${safePercent}%`;
+      progressPercent.textContent = `${safePercent}%`;
+      if (label) progressLabel.textContent = label;
+    }
+
+    function startProgress() {
+      let current = 8;
+      updateProgress(current, 'Preparing request');
+      clearInterval(progressTimer);
+      progressTimer = setInterval(() => {
+        current = Math.min(current + 4, 88);
+        updateProgress(current, current < 50 ? 'Uploading and saving' : 'Generating documents');
+      }, 1300);
+    }
+
+    function finishProgress(success) {
+      clearInterval(progressTimer);
+      updateProgress(100, success ? 'Completed' : 'Stopped');
+      progressBar.style.background = success ? 'var(--accent2)' : 'var(--accent)';
+    }
+
+    function resetProgress() {
+      clearInterval(progressTimer);
+      progressTimer = null;
+      progressWrap.style.display = 'none';
+      progressBar.style.width = '0%';
+      progressBar.style.background = 'var(--accent2)';
+      progressLabel.textContent = 'Preparing';
+      progressPercent.textContent = '0%';
+    }
+
+    function requestNotificationPermission() {
+      if (!('Notification' in window)) return;
+      if (Notification.permission === 'default') {
+        Notification.requestPermission().catch(() => {});
+      }
+    }
+
+    function showBrowserNotification(title, body) {
+      if (!('Notification' in window) || Notification.permission !== 'granted') return;
+      try {
+        new Notification(title, { body });
+      } catch (e) {}
+    }
+
+    function primeAudio() {
+      try {
+        const AudioContextRef = window.AudioContext || window.webkitAudioContext;
+        if (!resultAudioCtx) resultAudioCtx = new AudioContextRef();
+        if (resultAudioCtx.state === 'suspended') resultAudioCtx.resume();
+      } catch (e) {}
+    }
+
+    function playResultSound(success) {
+      try {
+        primeAudio();
+        const ctx = resultAudioCtx;
+        if (!ctx) return;
+        const gain = ctx.createGain();
+        gain.connect(ctx.destination);
+        gain.gain.setValueAtTime(0.06, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.32);
+
+        const tones = success ? [523, 659, 784] : [220, 165];
+        tones.forEach((freq, index) => {
+          const osc = ctx.createOscillator();
+          osc.type = success ? 'triangle' : 'sawtooth';
+          osc.frequency.value = freq;
+          osc.connect(gain);
+          const startAt = ctx.currentTime + (index * 0.09);
+          osc.start(startAt);
+          osc.stop(startAt + 0.11);
+        });
+      } catch (e) {}
+    }
+
+    function notifyResult(success, message) {
+      playResultSound(success);
+      showBrowserNotification(success ? 'Documents Generated' : 'Document Error', message);
+    }
+
     function resetForm() {
       document.getElementById('tmForm').reset();
       preview.style.display = 'none';
       statusEl.style.display = 'none';
+      resetProgress();
       document.getElementById('noImg').value = '[NO IMAGE PROVIDED]';
       document.getElementById('year').value = '2026';
     }
@@ -481,6 +614,10 @@
       e.preventDefault();
 
       submitBtn.disabled = true;
+      submitBtn.textContent = 'Generating...';
+      requestNotificationPermission();
+      primeAudio();
+      startProgress();
       showStatus('Processing... Please wait (this may take 15-40 seconds).', 'info');
 
       const payload = {
@@ -505,6 +642,7 @@
 
       const file = fileInput.files[0];
       if (file) {
+        updateProgress(18, 'Reading logo image');
         const base64 = await new Promise((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = () => resolve(reader.result);
@@ -517,12 +655,14 @@
       }
 
       try {
+        updateProgress(34, 'Uploading to Drive');
         const res = await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
           body: JSON.stringify(payload),
           headers: { 'Content-Type': 'text/plain;charset=utf-8' }
         });
 
+        updateProgress(78, 'Checking response');
         const text = await res.text();
         let data;
         try {
@@ -532,6 +672,7 @@
         }
 
         if (data.ok) {
+          finishProgress(true);
           showStatus(
             `✅ Success! Documents generated.<br>Serial: <strong>${data.serialNo || 'N/A'}</strong><br>Row saved in Sheet1.`,
             'success',
@@ -541,13 +682,20 @@
               tm48Url: data.tm48Url
             }
           );
+          notifyResult(true, `Serial ${data.serialNo || 'N/A'} saved in Sheet1.`);
         } else {
-          showStatus('❌ Error: ' + (data.error || 'Unknown error'), 'error');
+          finishProgress(false);
+          const errorMessage = data.error || 'Unknown error';
+          showStatus('❌ Error: ' + errorMessage, 'error');
+          notifyResult(false, errorMessage);
         }
       } catch (err) {
+        finishProgress(false);
         showStatus('❌ Request failed: ' + err.message, 'error');
+        notifyResult(false, err.message);
       } finally {
         submitBtn.disabled = false;
+        submitBtn.textContent = 'Generate Documents';
       }
     });
   </script>
