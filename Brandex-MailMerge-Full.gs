@@ -483,26 +483,14 @@ function showImageUploader() {
   SpreadsheetApp.getUi().showSidebar(html);
 }
 
-function uploadToDrive(base64Data, fileName, mimeType, rowNumber) {
+function uploadToDrive(base64Data, fileName, mimeType) {
+  // NOTE: Sidebar uploads still go to MAIN folder.
+  // Web form path uses processRowAndReturnLinks (client folder).
   var base64 = base64Data.split(",")[1];
   var bytes  = Utilities.base64Decode(base64);
-  var sheet  = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
-  var targetFolder = DriveApp.getFolderById("1PI-Znj4HIm6SJ0fNeUeK_p01iUckTg8H");
-  var safeName = "trademark";
-
-  if (sheet && rowNumber) {
-    var rowData = getRowData(sheet, rowNumber);
-    if (rowData.folder) {
-      targetFolder = getOrCreateFolder(targetFolder, rowData.folder);
-      safeName = rowData.folder;
-    }
-  }
-
-  var logoFolder = getOrCreateFolder(targetFolder, "Logo");
-  var ext = getImageExtension(mimeType, fileName);
-  var imageFileName = sanitizeDriveName(safeName || fileName || "trademark") + "_logo." + ext;
-  var blob = Utilities.newBlob(bytes, mimeType || "image/jpeg", imageFileName);
-  var file = logoFolder.createFile(blob);
+  var blob   = Utilities.newBlob(bytes, mimeType, fileName);
+  var folder = DriveApp.getFolderById("1PI-Znj4HIm6SJ0fNeUeK_p01iUckTg8H");
+  var file   = folder.createFile(blob);
   try { file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW); } catch(e){}
   return file.getId();
 }
@@ -516,7 +504,7 @@ function writeImageIdToSheet(rowNumber, fileId) {
 
 // ═════════════════════════════════════════════════════════════════════
 // WEB FORM HANDLER (doPost)
-// Image is saved INSIDE generated client folder > Logo as FOLDERNAME_logo.ext
+// Image is saved INSIDE the generated client folder as FOLDERNAME_logo.ext
 // ═════════════════════════════════════════════════════════════════════
 
 function doPost(e) {
@@ -603,16 +591,17 @@ function processRowAndReturnLinks(sheet, row, mainFolderId, tm1TemplateId, tm48T
     sheet.getRange(row, 6).setValue(rowData.date);
   }
 
+  var parentFolder = DriveApp.getFolderById(mainFolderId);
+  var newFolder;
   try {
-    var parentFolder = DriveApp.getFolderById(mainFolderId);
-    parentFolder.getName();
-  } catch (folderErr) {
-    throw new Error("Main Drive folder inaccessible. Check Apps Script Drive permission and MAIN_FOLDER_ID: " + mainFolderId);
+    newFolder = parentFolder.createFolder(rowData.folder);
+  } catch (e) {
+    var folders = parentFolder.getFoldersByName(rowData.folder);
+    newFolder = folders.hasNext() ? folders.next() : null;
+    if (!newFolder) throw new Error("Folder create/find failed: " + rowData.folder);
   }
 
-  var newFolder = getOrCreateFolder(parentFolder, rowData.folder);
-
-  // ========== IMAGE → CLIENT FOLDER / LOGO + FOLDER NAME AS FILENAME ==========
+  // ========== IMAGE → CLIENT FOLDER + FOLDER NAME AS FILENAME ==========
   var imageId = "";
   var tmImageBlob = null;
 
@@ -620,23 +609,26 @@ function processRowAndReturnLinks(sheet, row, mainFolderId, tm1TemplateId, tm48T
     try {
       var base64 = formData.imageBase64.split(",")[1];
       var bytes  = Utilities.base64Decode(base64);
-      var ext = getImageExtension(formData.imageMime, formData.imageName);
-      var logoFolder = getOrCreateFolder(newFolder, "Logo");
-      var safeName = sanitizeDriveName(rowData.folder || "trademark");
+      var ext = "jpg";
+      if (formData.imageMime) {
+        if (formData.imageMime.indexOf("png") !== -1) ext = "png";
+        else if (formData.imageMime.indexOf("gif") !== -1) ext = "gif";
+        else if (formData.imageMime.indexOf("webp") !== -1) ext = "webp";
+      }
+      var safeName = (rowData.folder || "trademark").toString().replace(/[\\/:*?"<>|]/g, "_").trim();
       var imageFileName = safeName + "_logo." + ext;
 
       var blob = Utilities.newBlob(bytes, formData.imageMime || "image/jpeg", imageFileName);
-      var file = logoFolder.createFile(blob); // INSIDE client folder > Logo
+      var file = newFolder.createFile(blob); // INSIDE client folder
       try { file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW); } catch (e) {}
       imageId = file.getId();
       tmImageBlob = blob;
       sheet.getRange(row, 20).setValue(imageId); // Col T
 
-      Logger.log("✅ Image saved inside client Logo folder: " + newFolder.getName() +
+      Logger.log("✅ Image saved INSIDE client folder: " + newFolder.getName() +
                  " | File: " + imageFileName + " | ID: " + imageId);
     } catch (imgErr) {
       Logger.log("Image upload failed: " + imgErr);
-      throw new Error("Logo upload failed. Check Drive permission/folder access. " + (imgErr.message || imgErr));
     }
   } else if (rowData.img) {
     tmImageBlob = getImageFromDriveId(rowData.img);
@@ -679,29 +671,6 @@ function processRowAndReturnLinks(sheet, row, mainFolderId, tm1TemplateId, tm48T
     tm1Url: tm1Doc ? tm1Doc.getUrl() : null,
     tm48Url: tm48Doc ? tm48Doc.getUrl() : null
   };
-}
-
-function sanitizeDriveName(name) {
-  var cleaned = (name || "trademark").toString().replace(/[\\/:*?"<>|]/g, "_").trim();
-  return cleaned || "trademark";
-}
-
-function getImageExtension(mimeType, fileName) {
-  var mime = (mimeType || "").toLowerCase();
-  if (mime.indexOf("png") !== -1) return "png";
-  if (mime.indexOf("gif") !== -1) return "gif";
-  if (mime.indexOf("webp") !== -1) return "webp";
-  if (mime.indexOf("jpeg") !== -1 || mime.indexOf("jpg") !== -1) return "jpg";
-
-  var match = (fileName || "").toString().toLowerCase().match(/\.([a-z0-9]+)$/);
-  return match ? match[1] : "jpg";
-}
-
-function getOrCreateFolder(parentFolder, folderName) {
-  var safeFolderName = sanitizeDriveName(folderName);
-  var folders = parentFolder.getFoldersByName(safeFolderName);
-  if (folders.hasNext()) return folders.next();
-  return parentFolder.createFolder(safeFolderName);
 }
 
 function generateWordDocReturn(templateId, folder, docName, mergeData, imageBlob, imagePlaceholder, fallbackText, templateLabel) {
