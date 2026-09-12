@@ -189,6 +189,39 @@ function processOneApplication() {
 
 
 // ============================================================
+// getOrCreateClientFolder — SHARED FIX
+// ------------------------------------------------------------
+// PURPOSE: Pehle ye function EXISTING folder (same naam) DHOONDTA
+// hai. Agar mil jaye to WAHI reuse karta hai. Agar na mile, tab
+// hi NAYI folder banata hai.
+//
+// KYUN ZAROORI HAI: Google Drive ka "createFolder()" kabhi bhi
+// duplicate naam par ERROR nahi deta — ye chup chap ek ALAG NAYI
+// folder bana deta hai, chahe usi naam ki folder pehle se maujood
+// ho. Purane code mein "try { createFolder() } catch { find }"
+// likha tha — lekin createFolder() kabhi throw hi nahi karta, is
+// liye "catch" wala find-existing hissa kabhi chalta hi nahi tha.
+// NATEEJA: har submission par ek NAYI duplicate-naam folder ban
+// rahi thi, aur upload ki gayi image usi NAYI (duplicate) folder
+// ke andar chali jati thi — jo folder aap check kar rahe thay
+// (purani wali), uske andar kabhi image aati hi nahi thi.
+// ============================================================
+function getOrCreateClientFolder(parentFolder, rawFolderName) {
+  // Drive folder names mein invalid characters (\ / : * ? " < > |)
+  // sanitize kiye ja rahe hain — taake filename aur folder name
+  // dono hamesha match karein.
+  var folderName = (rawFolderName || "UNTITLED").toString()
+    .replace(/[\\/:*?"<>|]/g, "_").trim();
+
+  var existing = parentFolder.getFoldersByName(folderName);
+  if (existing.hasNext()) {
+    return existing.next(); // ✅ EXISTING folder reuse — koi duplicate nahi banega
+  }
+  return parentFolder.createFolder(folderName); // Sirf tab banao jab pehle se na ho
+}
+
+
+// ============================================================
 // processRow — Sheet menu path (existing image ID from Col T)
 // ============================================================
 function processRow(sheet, row, mainFolderId, tm1TemplateId, tm48TemplateId) {
@@ -218,14 +251,9 @@ function processRow(sheet, row, mainFolderId, tm1TemplateId, tm48TemplateId) {
       );
     }
 
-    var newFolder;
-    try {
-      newFolder = parentFolder.createFolder(rowData.folder);
-    } catch (e) {
-      var folders = parentFolder.getFoldersByName(rowData.folder);
-      newFolder   = folders.hasNext() ? folders.next() : null;
-      if (!newFolder) throw new Error("Folder create/find nahi hua: " + rowData.folder);
-    }
+    // FIX: ab getOrCreateClientFolder() use ho raha hai (upar dekhein)
+    // taake purani wali GENERATED folder hi reuse ho, nayi duplicate na bane.
+    var newFolder = getOrCreateClientFolder(parentFolder, rowData.folder);
 
     var tmImageBlob = getImageFromDriveId(rowData.img);
     generateDocuments(rowData, newFolder, tm1TemplateId, tm48TemplateId, tmImageBlob);
@@ -519,7 +547,8 @@ function doPost(e) {
         row: result.row,
         folderUrl: result.folderUrl,
         tm1Url: result.tm1Url,
-        tm48Url: result.tm48Url
+        tm48Url: result.tm48Url,
+        imageWarning: result.imageWarning || "" // FIX: frontend ab is field ko dikha sakta hai
       });
     }
 
@@ -574,7 +603,8 @@ function processFormSubmission(data) {
     row: lastRow,
     folderUrl: processResult.folderUrl,
     tm1Url: processResult.tm1Url,
-    tm48Url: processResult.tm48Url
+    tm48Url: processResult.tm48Url,
+    imageWarning: processResult.imageWarning // FIX: forward to doPost()
   };
 }
 
@@ -592,18 +622,15 @@ function processRowAndReturnLinks(sheet, row, mainFolderId, tm1TemplateId, tm48T
   }
 
   var parentFolder = DriveApp.getFolderById(mainFolderId);
-  var newFolder;
-  try {
-    newFolder = parentFolder.createFolder(rowData.folder);
-  } catch (e) {
-    var folders = parentFolder.getFoldersByName(rowData.folder);
-    newFolder = folders.hasNext() ? folders.next() : null;
-    if (!newFolder) throw new Error("Folder create/find failed: " + rowData.folder);
-  }
+  // FIX: getOrCreateClientFolder() pehle EXISTING folder dhoondta hai,
+  // sirf na milne par NAYI banata hai — is se duplicate-naam folders
+  // banna band ho jayenge aur image hamesha SAHI (asal) folder mein jayegi.
+  var newFolder = getOrCreateClientFolder(parentFolder, rowData.folder);
 
   // ========== IMAGE → CLIENT FOLDER + FOLDER NAME AS FILENAME ==========
   var imageId = "";
   var tmImageBlob = null;
+  var imageWarning = ""; // FIX: agar image save fail ho to ye user tak jayega (pehle sirf Logger mein chup jata tha)
 
   if (formData && formData.imageBase64) {
     try {
@@ -628,7 +655,10 @@ function processRowAndReturnLinks(sheet, row, mainFolderId, tm1TemplateId, tm48T
       Logger.log("✅ Image saved INSIDE client folder: " + newFolder.getName() +
                  " | File: " + imageFileName + " | ID: " + imageId);
     } catch (imgErr) {
-      Logger.log("Image upload failed: " + imgErr);
+      // FIX: ab error sirf Logger mein chup nahi jayega — ye variable
+      // return value ke through frontend tak pohanchega (neeche return statement dekhein).
+      imageWarning = "⚠️ Image upload folder ke andar save NAHI ho saki: " + imgErr;
+      Logger.log("❌ Image upload failed: " + imgErr);
     }
   } else if (rowData.img) {
     tmImageBlob = getImageFromDriveId(rowData.img);
@@ -669,7 +699,8 @@ function processRowAndReturnLinks(sheet, row, mainFolderId, tm1TemplateId, tm48T
   return {
     folderUrl: newFolder.getUrl(),
     tm1Url: tm1Doc ? tm1Doc.getUrl() : null,
-    tm48Url: tm48Doc ? tm48Doc.getUrl() : null
+    tm48Url: tm48Doc ? tm48Doc.getUrl() : null,
+    imageWarning: imageWarning // FIX: empty string agar sab theek, warna warning message
   };
 }
 
