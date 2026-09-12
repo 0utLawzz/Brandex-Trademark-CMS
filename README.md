@@ -24,7 +24,7 @@ Do not also copy `apps-script-form-handler.gs` into the same Apps Script project
 5. Deploy → Manage deployments → Edit.
 6. Select **New version** and deploy it.
 7. Use the same Web App URL configured in `trademark-application.html`:
-   `https://script.google.com/macros/s/AKfycbxod3G9xT8acKrQC8HbuRQbGEjjfvu8NBbYNTDFds4osUtZNv290r6q9h8Nf8FH2ZT9mQ/exec`
+   `https://script.google.com/macros/s/AKfycbwuhiV8I22JNBX-hNRQBJqIkYfqe6o844aCGENYQdV4INR2KkAxUgESFbOUaQWeqVI7CQ/exec`
 
 **Saving the Apps Script project is not enough. The web app must be redeployed as a new version for the public form to use the changed code.**
 
