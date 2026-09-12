@@ -455,7 +455,7 @@
     // ============================================================
     //  SETTINGS — Apps Script Web App URL
     // ============================================================
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxod3G9xT8acKrQC8HbuRQbGEjjfvu8NBbYNTDFds4osUtZNv290r6q9h8Nf8FH2ZT9mQ/exec";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwuhiV8I22JNBX-hNRQBJqIkYfqe6o844aCGENYQdV4INR2KkAxUgESFbOUaQWeqVI7CQ/exec";
     // ============================================================
 
     const dropZone = document.getElementById('dropZone');
@@ -673,8 +673,13 @@
 
         if (data.ok) {
           finishProgress(true);
+          // FIX: agar backend ne imageWarning bheji hai (image save fail hui thi),
+          // to ye message success ke sath sath show hoga — chup chap nahi rahega.
+          var warningLine = data.imageWarning
+            ? `<br><span style="color:#b45309;">${data.imageWarning}</span>`
+            : '';
           showStatus(
-            `✅ Success! Documents generated.<br>Serial: <strong>${data.serialNo || 'N/A'}</strong><br>Row saved in Sheet1.`,
+            `✅ Success! Documents generated.<br>Serial: <strong>${data.serialNo || 'N/A'}</strong><br>Row saved in Sheet1.${warningLine}`,
             'success',
             {
               folderUrl: data.folderUrl,
@@ -682,7 +687,7 @@
               tm48Url: data.tm48Url
             }
           );
-          notifyResult(true, `Serial ${data.serialNo || 'N/A'} saved in Sheet1.`);
+          notifyResult(true, `Serial ${data.serialNo || 'N/A'} saved in Sheet1.` + (data.imageWarning ? ' ' + data.imageWarning : ''));
         } else {
           finishProgress(false);
           const errorMessage = data.error || 'Unknown error';
