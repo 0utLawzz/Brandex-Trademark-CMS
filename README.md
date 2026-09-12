@@ -39,9 +39,9 @@ Do not also copy `apps-script-form-handler.gs` into the same Apps Script project
 ## Config IDs
 
 ```text
-MAIN_FOLDER_ID   = 1PI-Znj4HIm6SJ0fNeUeK_p01iUckTg8H
-TM1_TEMPLATE_ID  = 1XE42w12VjBMUW7jdvRU-HHdhmFd6yTB7HtL6H27FCnE
-TM48_TEMPLATE_ID = 1EDAbs37UZekCrrNn3JKYWZcjMiuBW6bDUsfTg5AVAhc
+  MAIN_FOLDER_ID   = "1R-cQ1qYLat0DlnYKs699kXBX0zr7BZDP"
+  TM1_TEMPLATE_ID  = "1STwQUmtknPf1TcWuK1YtEib1ZWiM1yN3tyILlVGwglg"
+  TM48_TEMPLATE_ID = "1HyQyz-_tMFIy1X1bH0-sAToZmE2QJL5NFhGUwI_vLgE"
 ```
 
 ## Menu tools
