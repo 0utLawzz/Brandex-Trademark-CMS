@@ -291,7 +291,7 @@ function processRow(sheet, row, mainFolderId, tm1TemplateId, tm48TemplateId) {
 // getRowData
 // ============================================================
 function getRowData(sheet, row) {
-  var range  = sheet.getRange(row, 1, 1, 21);
+  var range  = sheet.getRange(row, 1, 1, 22); // FIX: 21 → 22 (naya FILING PROCESS col shamil karne ke liye)
   var values = range.getValues()[0];
 
   var dateVal = values[5];
@@ -340,6 +340,7 @@ function getRowData(sheet, row) {
     conAdd:     values[18],
     img:        values[19],
     noImg:      values[20] || "[NO IMAGE PROVIDED]",
+    filingProcess: values[21] || "PENDING", // NEW: Col V — sheet-side manual tracker
     goodsServices: goodsServices
   };
 }
@@ -493,12 +494,13 @@ function setupSpreadsheet() {
     "CLASS", "CLASS-DESC", "APP-TYPE", "APP-NAME",
     "APP-SO", "APP-CNIC", "ISSUE-DATE", "EXPIRY-DATE",
     "APP-TRADE", "APP-ADD", "YEAR", "CON-NAME", "CON-ADD",
-    "IMG", "NO-IMG"
+    "IMG", "NO-IMG",
+    "FILING PROCESS" // NEW: Col V (22) — manual tracking dropdown, sheet-side only
   ];
   sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
   sheet.getRange(1, 1, 1, headers.length)
     .setBackground("#1a1a2e").setFontColor("#e94560").setFontWeight("bold");
-  SpreadsheetApp.getUi().alert("Setup Complete", "✅ Headers set (21 columns A–U).", SpreadsheetApp.getUi().ButtonSet.OK);
+  SpreadsheetApp.getUi().alert("Setup Complete", "✅ Headers set (22 columns A–V).", SpreadsheetApp.getUi().ButtonSet.OK);
 }
 
 
@@ -518,10 +520,25 @@ function setupDropdowns() {
     sheet.getRange(2, 9, lastRow - 1, 1).setDataValidation(
       SpreadsheetApp.newDataValidation().requireValueInList(["SOLE PROPRIETOR", "PARTNERS", "A PAKISTANI COMPANY"]).setAllowInvalid(false).build()
     );
-    sheet.getRange(2, 17, lastRow - 1, 1).setDataValidation(
-      SpreadsheetApp.newDataValidation().requireValueInList(["2022", "2023", "2024", "2025", "2026"]).setAllowInvalid(false).build()
+    // NEW: CLASS column (G) ko bhi 1–45 tak dropdown de diya, taake koi seedha
+    // sheet mein galat/typo class number na daal sakay (form se to ye ab
+    // select se hi aata hai, ye sirf sheet-side manual edit ke liye safety hai).
+    var classNumbers = [];
+    for (var c = 1; c <= 45; c++) classNumbers.push(c.toString());
+    sheet.getRange(2, 7, lastRow - 1, 1).setDataValidation(
+      SpreadsheetApp.newDataValidation().requireValueInList(classNumbers).setAllowInvalid(true).build()
     );
-    SpreadsheetApp.getUi().alert("Dropdowns Ready", "✅ Dropdowns set.", SpreadsheetApp.getUi().ButtonSet.OK);
+    // FIX: YEAR ab "manual entry" allow karta hai (form mein bhi free-type hai) —
+    // is liye list sirf SUGGESTION ke tor par hai, setAllowInvalid(true) taake
+    // koi bhi saal (purana ya naya) sheet mein bhi likha ja sakay.
+    sheet.getRange(2, 17, lastRow - 1, 1).setDataValidation(
+      SpreadsheetApp.newDataValidation().requireValueInList(["2020","2021","2022", "2023", "2024", "2025", "2026", "2027", "2028"]).setAllowInvalid(true).build()
+    );
+    // NEW: FILING PROCESS (Col V / 22) — manual status tracker, default "PENDING"
+    sheet.getRange(2, 22, lastRow - 1, 1).setDataValidation(
+      SpreadsheetApp.newDataValidation().requireValueInList(["PENDING", "DISPATCHED 📬", "REVIEW", "CANCELED"]).setAllowInvalid(false).build()
+    );
+    SpreadsheetApp.getUi().alert("Dropdowns Ready", "✅ Dropdowns set (incl. CLASS 1–45 and FILING PROCESS).", SpreadsheetApp.getUi().ButtonSet.OK);
   } catch (error) {
     SpreadsheetApp.getUi().alert("Error", "❌ " + error.message, SpreadsheetApp.getUi().ButtonSet.OK);
   }
@@ -590,9 +607,10 @@ function processFormSubmission(data) {
     data.issueDate || "", data.expiryDate || "", data.appTrade || "",
     data.appAdd || "", data.year || "", data.conName || "", data.conAdd || "",
     "", // T - imageId filled after upload into client folder
-    data.noImg || "[NO IMAGE PROVIDED]"
+    data.noImg || "[NO IMAGE PROVIDED]",
+    "PENDING" // V - FILING PROCESS default (naye submissions hamesha PENDING se start)
   ];
-  sheet.getRange(lastRow, 1, 1, 21).setValues([rowValues]);
+  sheet.getRange(lastRow, 1, 1, 22).setValues([rowValues]); // FIX: 21 → 22 columns
 
   sheet.getRange(lastRow, 1).setValue("ON IT 👉");
   SpreadsheetApp.flush();
