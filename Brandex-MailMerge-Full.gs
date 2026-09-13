@@ -5,6 +5,21 @@
 // ═════════════════════════════════════════════════════════════════════
 
 // ─────────────────────────────────────────────────────────────────────
+// ⚙️ CONFIG — SIRF YAHAN CHANGE KAREIN (ek hi jagah)
+// ─────────────────────────────────────────────────────────────────────
+// FIX: Pehle ye 3 IDs har function ke andar ALAG SE hardcoded thi
+// (4 jagah — kahin variable, kahin bilkul raw string). Is wajah se
+// jab aap ek jagah ID change karte thay, baqi 3 jagah PURANI ID hi
+// reh jati thi — aur script kabhi purani, kabhi nayi folder use karti
+// thi (isi liye "kabhi kabhi purani shared folder" wala issue aa raha tha).
+//
+// AB: Sirf yahan neeche teeno values update karein — poori script
+// automatically nayi value use karegi. Kahin aur ye IDs dobara mat likhein.
+var MAIN_FOLDER_ID   = "1PI-Znj4HIm6SJ0fNeUeK_p01iUckTg8H"; // Apni Drive ka MAIN folder ID (jahan client folders banti hain)
+var TM1_TEMPLATE_ID  = "1XE42w12VjBMUW7jdvRU-HHdhmFd6yTB7HtL6H27FCnE"; // TM-1 Google Doc template ki ID
+var TM48_TEMPLATE_ID = "1EDAbs37UZekCrrNn3JKYWZcjMiuBW6bDUsfTg5AVAhc"; // TM-48 Google Doc template ki ID
+
+// ─────────────────────────────────────────────────────────────────────
 // MENU
 // ─────────────────────────────────────────────────────────────────────
 function onOpen() {
@@ -63,9 +78,7 @@ function processAllApplications() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheetByName("Sheet1");
 
-  var MAIN_FOLDER_ID   = "1PI-Znj4HIm6SJ0fNeUeK_p01iUckTg8H";
-  var TM1_TEMPLATE_ID  = "1XE42w12VjBMUW7jdvRU-HHdhmFd6yTB7HtL6H27FCnE";
-  var TM48_TEMPLATE_ID = "1EDAbs37UZekCrrNn3JKYWZcjMiuBW6bDUsfTg5AVAhc";
+  // FIX: duplicate local ID declaration removed — ab MAIN_FOLDER_ID/TM1_TEMPLATE_ID/TM48_TEMPLATE_ID top ke CONFIG se aa rahi hain (ek hi jagah se).
 
   try {
     var lastRow = sheet.getLastRow();
@@ -114,7 +127,10 @@ function processAllApplications() {
         successCount++;
       } catch (error) {
         Logger.log("❌ Row " + currentRow + " error: " + error.toString());
-        sheet.getRange(currentRow, 1).setValue("START 💫");
+        // FIX: pehle yahan "START 💫" set hota tha — matlab lagta tha row
+        // kabhi process hi nahi hui. Ab "ERROR ❌" set hoga taake failed
+        // rows clearly nazar aayein aur "not-yet-started" rows se alag pehchani ja sakein.
+        sheet.getRange(currentRow, 1).setValue("ERROR ❌");
         SpreadsheetApp.getUi().alert(
           "Error in Row " + currentRow,
           error.message,
@@ -147,9 +163,7 @@ function processOneApplication() {
   var ss    = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheetByName("Sheet1");
 
-  var MAIN_FOLDER_ID   = "1PI-Znj4HIm6SJ0fNeUeK_p01iUckTg8H";
-  var TM1_TEMPLATE_ID  = "1XE42w12VjBMUW7jdvRU-HHdhmFd6yTB7HtL6H27FCnE";
-  var TM48_TEMPLATE_ID = "1EDAbs37UZekCrrNn3JKYWZcjMiuBW6bDUsfTg5AVAhc";
+  // FIX: duplicate local ID declaration removed — ab MAIN_FOLDER_ID/TM1_TEMPLATE_ID/TM48_TEMPLATE_ID top ke CONFIG se aa rahi hain (ek hi jagah se).
 
   try {
     var lastRow = sheet.getLastRow();
@@ -183,6 +197,12 @@ function processOneApplication() {
     );
   } catch (error) {
     Logger.log("processOneApplication error: " + error.toString());
+    // FIX: pehle yahan row ka status RESET NAHI hota tha — agar processRow()
+    // beech mein fail ho jati, row hamesha "ON IT 👉" par hi atki reh jati thi,
+    // aur lagta tha abhi bhi process ho raha hai. Ab clearly "ERROR ❌" set hoga.
+    try {
+      if (typeof row !== "undefined") sheet.getRange(row, 1).setValue("ERROR ❌");
+    } catch (e2) {}
     SpreadsheetApp.getUi().alert("Error", "❌ " + error.message, SpreadsheetApp.getUi().ButtonSet.OK);
   }
 }
@@ -486,7 +506,10 @@ function setupDropdowns() {
   var lastRow = Math.max(sheet.getLastRow(), 100);
   try {
     sheet.getRange(2, 1, lastRow - 1, 1).setDataValidation(
-      SpreadsheetApp.newDataValidation().requireValueInList(["START 💫", "ON IT 👉", "DONE ✅"]).setAllowInvalid(false).build()
+      // FIX: "ERROR ❌" add ki gayi — ab fail hone par row is status par
+      // clearly ruk jayegi, na ke "ON IT" par atki rahegi ya chup chap
+      // "START" par wapas chali jaye.
+      SpreadsheetApp.newDataValidation().requireValueInList(["START 💫", "ON IT 👉", "DONE ✅", "ERROR ❌"]).setAllowInvalid(false).build()
     );
     sheet.getRange(2, 2, lastRow - 1, 1).setDataValidation(
       SpreadsheetApp.newDataValidation().requireValueInList(["STAGE 1"]).setAllowInvalid(false).build()
@@ -504,30 +527,13 @@ function setupDropdowns() {
 }
 
 
-// Sidebar helpers (optional)
-function showImageUploader() {
-  var html = HtmlService.createHtmlOutputFromFile("ImageUploader")
-    .setTitle("📤 Upload TM Image").setWidth(380);
-  SpreadsheetApp.getUi().showSidebar(html);
-}
-
-function uploadToDrive(base64Data, fileName, mimeType) {
-  // NOTE: Sidebar uploads still go to MAIN folder.
-  // Web form path uses processRowAndReturnLinks (client folder).
-  var base64 = base64Data.split(",")[1];
-  var bytes  = Utilities.base64Decode(base64);
-  var blob   = Utilities.newBlob(bytes, mimeType, fileName);
-  var folder = DriveApp.getFolderById("1PI-Znj4HIm6SJ0fNeUeK_p01iUckTg8H");
-  var file   = folder.createFile(blob);
-  try { file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW); } catch(e){}
-  return file.getId();
-}
-
-function writeImageIdToSheet(rowNumber, fileId) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
-  sheet.getRange(rowNumber, 20).setValue(fileId);
-  return true;
-}
+// FIX: "Upload TM Image" sidebar tool (showImageUploader + uploadToDrive +
+// writeImageIdToSheet) yahan se HATA DIYA GAYA hai — client ke mutabiq
+// ab sheet mein manual kaam nahi hota, sab kuch web form se hota hai.
+// Ye purani sidebar bhi asal mein image ko MAIN folder ke root mein daalti
+// thi (client folder ke andar nahi) — is liye inconsistent bhi thi.
+// Agar kabhi dobara zaroorat pare, purani copy Claude conversation history
+// mein maujood hai.
 
 
 // ═════════════════════════════════════════════════════════════════════
@@ -569,9 +575,7 @@ function processFormSubmission(data) {
   var sheet = ss.getSheetByName("Sheet1");
   if (!sheet) throw new Error("Sheet1 not found");
 
-  var MAIN_FOLDER_ID   = "1PI-Znj4HIm6SJ0fNeUeK_p01iUckTg8H";
-  var TM1_TEMPLATE_ID  = "1XE42w12VjBMUW7jdvRU-HHdhmFd6yTB7HtL6H27FCnE";
-  var TM48_TEMPLATE_ID = "1EDAbs37UZekCrrNn3JKYWZcjMiuBW6bDUsfTg5AVAhc";
+  // FIX: duplicate local ID declaration removed — ab MAIN_FOLDER_ID/TM1_TEMPLATE_ID/TM48_TEMPLATE_ID top ke CONFIG se aa rahi hain (ek hi jagah se).
 
   var lastRow = sheet.getLastRow() + 1;
   var serial  = generateUniqueSerial(sheet);
@@ -592,9 +596,19 @@ function processFormSubmission(data) {
   sheet.getRange(lastRow, 1).setValue("ON IT 👉");
   SpreadsheetApp.flush();
 
-  var processResult = processRowAndReturnLinks(
-    sheet, lastRow, MAIN_FOLDER_ID, TM1_TEMPLATE_ID, TM48_TEMPLATE_ID, data
-  );
+  // FIX: pehle agar processRowAndReturnLinks() beech mein fail ho jati
+  // (missing field, folder issue, wagera), row hamesha "ON IT 👉" par
+  // hi atki reh jati thi — dikhta tha jese abhi bhi process ho raha hai,
+  // jabke woh fail ho chuki hoti thi. Ab clearly "ERROR ❌" set hoga.
+  var processResult;
+  try {
+    processResult = processRowAndReturnLinks(
+      sheet, lastRow, MAIN_FOLDER_ID, TM1_TEMPLATE_ID, TM48_TEMPLATE_ID, data
+    );
+  } catch (procErr) {
+    sheet.getRange(lastRow, 1).setValue("ERROR ❌");
+    throw procErr; // doPost() ka catch ise pakar kar frontend ko error dikha dega
+  }
 
   sheet.getRange(lastRow, 1).setValue("DONE ✅");
 
@@ -647,7 +661,12 @@ function processRowAndReturnLinks(sheet, row, mainFolderId, tm1TemplateId, tm48T
 
       var blob = Utilities.newBlob(bytes, formData.imageMime || "image/jpeg", imageFileName);
       var file = newFolder.createFile(blob); // INSIDE client folder
-      try { file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW); } catch (e) {}
+      // FIX (confidentiality + speed): pehle yahan file.setSharing(ANYONE_WITH_LINK)
+      // call hoti thi — matlab client ka trademark logo "kisi bhi link rakhne
+      // wale" ke liye public view-able ban jata tha, filing se pehle hi. Ye
+      // ek IP-confidentiality risk hai aur ek extra Drive API call (thora slow
+      // bhi karta hai). Image doc ke andar embed ho hi jati hai — is liye
+      // alag se public sharing ki zaroorat nahi. Hata diya.
       imageId = file.getId();
       tmImageBlob = blob;
       sheet.getRange(row, 20).setValue(imageId); // Col T
