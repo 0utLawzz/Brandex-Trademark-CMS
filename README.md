@@ -1,4 +1,4 @@
-# Brandex IPO CMS
+# Brandex Mail Merge
 
 Neo-Brutalism CMS for Brandex Law Associates — Trademark Application Processor + tool links.
 
