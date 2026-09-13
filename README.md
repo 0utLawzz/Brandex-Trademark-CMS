@@ -4,8 +4,10 @@ Neo-Brutalism CMS for Brandex Law Associates — Trademark Application Processor
 
 ## Live Pages
 
-> CMS Home: https://0utlawzz.github.io/Brandex-MailMerge/
-> Trademark Form: https://0utlawzz.github.io/Brandex-MailMerge/trademark-application.html
+> CMS Home:
+https://0utlawzz.github.io/Brandex-MailMerge/
+> Trademark Form:
+https://0utlawzz.github.io/Brandex-MailMerge/trademark-application.html
 
 ## Apps Script (IMPORTANT)
 
