@@ -15,9 +15,10 @@
 //
 // AB: Sirf yahan neeche teeno values update karein — poori script
 // automatically nayi value use karegi. Kahin aur ye IDs dobara mat likhein.
-var MAIN_FOLDER_ID   = "1PI-Znj4HIm6SJ0fNeUeK_p01iUckTg8H"; // Apni Drive ka MAIN folder ID (jahan client folders banti hain)
-var TM1_TEMPLATE_ID  = "1XE42w12VjBMUW7jdvRU-HHdhmFd6yTB7HtL6H27FCnE"; // TM-1 Google Doc template ki ID
-var TM48_TEMPLATE_ID = "1EDAbs37UZekCrrNn3JKYWZcjMiuBW6bDUsfTg5AVAhc"; // TM-48 Google Doc template ki ID
+
+var MAIN_FOLDER_ID   = "1R-cQ1qYLat0DlnYKs699kXBX0zr7BZDP"; // Apni Drive ka MAIN folder ID (jahan client folders banti hain)
+var TM1_TEMPLATE_ID  = "1STwQUmtknPf1TcWuK1YtEib1ZWiM1yN3tyILlVGwglg"; // TM-1 Google Doc template ki ID
+var TM48_TEMPLATE_ID = "1HyQyz-_tMFIy1X1bH0-sAToZmE2QJL5NFhGUwI_vLgE"; // TM-48 Google Doc template ki ID
 
 // ─────────────────────────────────────────────────────────────────────
 // MENU
